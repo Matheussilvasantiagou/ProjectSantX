@@ -141,18 +141,11 @@ function setTheme(theme) {
 function setupBackground(bg) {
   const layerA = qs("[data-bg-layer='a']");
   const layerB = qs("[data-bg-layer='b']");
+  const mosaicRoot = qs("[data-bg-mosaic]");
   const overlay = qs("[data-bg-overlay]");
   const vignette = qs("[data-bg-vignette]");
   const grain = qs("[data-grain]");
   if (!layerA || !layerB || !overlay || !vignette) return;
-
-  const images = Array.isArray(bg?.images) ? bg.images.filter(Boolean) : [];
-  if (!images.length) {
-    layerA.style.backgroundImage =
-      "linear-gradient(135deg, rgba(var(--c-accent) / 0.22), rgba(var(--c-gold) / 0.18))";
-    layerA.classList.add("is-on");
-    return;
-  }
 
   const overlayStrength = clamp01(bg?.overlayStrength ?? 0.62);
   const vignetteStrength = clamp01(bg?.vignetteStrength ?? 0.55);
@@ -160,8 +153,45 @@ function setupBackground(bg) {
   vignette.style.opacity = String(vignetteStrength);
   if (grain) grain.style.display = bg?.filmGrain ? "block" : "none";
 
-  const intervalMs = Math.max(2500, Number(bg?.intervalMs ?? 6500));
   const mode = bg?.mode ?? "slideshow";
+
+  // MODO MOSAICO (fotos/vídeos)
+  if (mode === "mosaic" && mosaicRoot) {
+    const media = Array.isArray(bg?.media) ? bg.media.filter(Boolean) : [];
+    if (!media.length) {
+      // fallback suave
+      layerA.style.backgroundImage =
+        "linear-gradient(135deg, rgba(var(--c-accent) / 0.22), rgba(var(--c-contrast) / 0.18))";
+      layerA.classList.add("is-on");
+      layerB.classList.remove("is-on");
+      mosaicRoot.innerHTML = "";
+      mosaicRoot.style.display = "none";
+      return;
+    }
+
+    // esconde slideshow
+    layerA.classList.remove("is-on");
+    layerB.classList.remove("is-on");
+    mosaicRoot.style.display = "grid";
+    renderMosaic(mosaicRoot, media, bg?.mosaic);
+    return;
+  }
+
+  // MODO SLIDESHOW (legado)
+  const images = Array.isArray(bg?.images) ? bg.images.filter(Boolean) : [];
+  if (!images.length) {
+    layerA.style.backgroundImage =
+      "linear-gradient(135deg, rgba(var(--c-accent) / 0.22), rgba(var(--c-contrast) / 0.18))";
+    layerA.classList.add("is-on");
+    layerB.classList.remove("is-on");
+    if (mosaicRoot) {
+      mosaicRoot.innerHTML = "";
+      mosaicRoot.style.display = "none";
+    }
+    return;
+  }
+
+  const intervalMs = Math.max(2500, Number(bg?.intervalMs ?? 6500));
   let idx = 0;
   let onA = true;
 
@@ -172,6 +202,10 @@ function setupBackground(bg) {
   setLayer(layerA, images[idx % images.length]);
   layerA.classList.add("is-on");
   layerB.classList.remove("is-on");
+  if (mosaicRoot) {
+    mosaicRoot.innerHTML = "";
+    mosaicRoot.style.display = "none";
+  }
 
   if (mode !== "slideshow" || images.length === 1) return;
 
@@ -189,6 +223,80 @@ function setupBackground(bg) {
     }
     onA = !onA;
   }, intervalMs);
+}
+
+function renderMosaic(root, media, mosaicCfg) {
+  // Config com defaults bons
+  const tileMin = Math.max(80, Number(mosaicCfg?.tileMin ?? 120));
+  const tileMax = Math.max(tileMin, Number(mosaicCfg?.tileMax ?? 220));
+  const gap = Math.max(0, Number(mosaicCfg?.gap ?? 6));
+
+  const pickTile = () => {
+    const r = Math.random();
+    // tile size aleatório dentro do range
+    const size = Math.round(tileMin + (tileMax - tileMin) * r);
+    root.style.setProperty("--tile", `${size}px`);
+    root.style.setProperty("--gap", `${gap}px`);
+  };
+  pickTile();
+
+  root.innerHTML = "";
+
+  const isVideo = (src) => /\.(mp4|webm|mov)$/i.test(src);
+  const isImage = (src) => /\.(png|jpe?g|webp|avif|gif)$/i.test(src);
+
+  // Define uma quantidade de tiles baseada na tela
+  const area = Math.max(1, window.innerWidth * window.innerHeight);
+  const tileArea = Math.max(1, ((tileMin + tileMax) / 2) ** 2);
+  const count = clampInt(Math.round((area / tileArea) * 1.35), 18, 72);
+
+  for (let i = 0; i < count; i++) {
+    const src = media[i % media.length];
+    const tile = document.createElement("div");
+    tile.className = "bg__tile";
+
+    if (isVideo(src)) {
+      const v = document.createElement("video");
+      v.src = src;
+      v.muted = true;
+      v.loop = true;
+      v.playsInline = true;
+      v.autoplay = true;
+      v.preload = "metadata";
+      tile.appendChild(v);
+      // tenta tocar (alguns browsers só permitem se muted)
+      v.play().catch(() => {});
+    } else if (isImage(src)) {
+      const img = document.createElement("img");
+      img.src = src;
+      img.alt = "";
+      img.loading = "lazy";
+      tile.appendChild(img);
+    } else {
+      // fallback: trata como imagem
+      const img = document.createElement("img");
+      img.src = src;
+      img.alt = "";
+      img.loading = "lazy";
+      tile.appendChild(img);
+    }
+
+    root.appendChild(tile);
+  }
+
+  // Recria em resize (debounced)
+  let t = 0;
+  const onResize = () => {
+    window.clearTimeout(t);
+    t = window.setTimeout(() => renderMosaic(root, media, mosaicCfg), 180);
+  };
+  window.addEventListener("resize", onResize, { passive: true });
+}
+
+function clampInt(n, min, max) {
+  const x = Math.round(Number(n));
+  if (!Number.isFinite(x)) return min;
+  return Math.min(max, Math.max(min, x));
 }
 
 function clamp01(x) {

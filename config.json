@@ -92,12 +92,39 @@
     }
   },
   "background": {
-    "mode": "slideshow",
-    "images": ["assets/bg-1.jpg", "assets/bg-2.jpg", "assets/bg-3.jpg"],
+    "mode": "mosaic",
+    "media": [
+      "assets/partyImages/1.jpeg",
+      "assets/partyImages/2.jpeg",
+      "assets/partyImages/3.jpeg",
+      "assets/partyImages/4.jpeg",
+      "assets/partyImages/5.jpeg",
+      "assets/partyImages/6.jpeg",
+      "assets/partyImages/7.jpeg",
+      "assets/partyImages/8.jpeg",
+      "assets/partyImages/9.jpeg",
+      "assets/partyImages/10.jpeg",
+      "assets/partyImages/11.jpeg",
+      "assets/partyImages/12.jpeg",
+      "assets/partyImages/13.jpeg",
+      "assets/partyImages/14.jpeg",
+      "assets/partyImages/15.jpeg",
+      "assets/partyImages/16.jpeg",
+      "assets/partyImages/17.jpeg",
+      "assets/partyImages/18.jpeg",
+      "assets/partyImages/19.mov"
+    ],
     "intervalMs": 6500,
-    "overlayStrength": 0.62,
-    "vignetteStrength": 0.55,
-    "filmGrain": true
+    "overlayStrength": 1,
+    "vignetteStrength": 0.75,
+    "filmGrain": true,
+    "mosaic": {
+      "tileMin": 120,
+      "tileMax": 220,
+      "gap": 6,
+      "parallax": 0.25,
+      "videoChance": 0.22
+    }
   },
   "theme": {
     "accent": "#4ED6D3",
