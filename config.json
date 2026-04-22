@@ -112,14 +112,16 @@
       "assets/partyImages/16.jpeg",
       "assets/partyImages/17.jpeg",
       "assets/partyImages/18.jpeg",
-      "assets/partyImages/19.mov"
+      "assets/partyImages/20.jpeg",
+      "assets/partyImages/21.jpeg",
+      "assets/partyImages/22.jpeg"
     ],
     "intervalMs": 6500,
     "overlayStrength": 1,
     "vignetteStrength": 0.75,
     "filmGrain": true,
     "mosaic": {
-      "tileMin": 120,
+      "tileMin": 50,
       "tileMax": 220,
       "gap": 6,
       "parallax": 0.25,

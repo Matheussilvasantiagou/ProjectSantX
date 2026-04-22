@@ -1,0 +1,16 @@
+{
+  "name": "project-santx-invite",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "esbuild src/app.ts --bundle --format=iife --target=es2018 --outfile=app.js --minify",
+    "dev": "npm run build -- --sourcemap && concurrently -k \"esbuild src/app.ts --bundle --format=iife --target=es2018 --outfile=app.js --sourcemap --watch\" \"browser-sync start --server --port 5173 --files 'index.html' 'home.html' 'styles.css' 'app.js' 'config.json' 'assets/**'\""
+  },
+  "devDependencies": {
+    "browser-sync": "^3.0.4",
+    "concurrently": "^9.2.0",
+    "esbuild": "^0.25.9",
+    "typescript": "^5.9.2"
+  }
+}
+
