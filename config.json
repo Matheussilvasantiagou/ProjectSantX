@@ -1,0 +1,114 @@
+{
+  "event": {
+    "title": "Project SantX",
+    "subtitle": "Isso mesmo que você está lendo, a festa do ano voltou!",
+    "dateText": "Sábado, 00 de Mês de 2026",
+    "timeText": "A partir das 22:00",
+    "locationName": "Minha casa (endereço completo)",
+    "locationAddress": "Rua Exemplo, 123 — Bairro — Cidade/UF",
+    "locationImages": [
+      "assets/local-1.jpg",
+      "assets/local-2.jpg",
+      "assets/local-3.jpg"
+    ],
+    "mapsUrl": "https://www.google.com/maps",
+    "rsvp": {
+      "enabled": true,
+      "ctaText": "Confirmar presença",
+      "whatsappPhoneE164": "+55XXXXXXXXXXX",
+      "whatsappPrefill": "Tô dentro! Confirmando presença no Project X 🎉%0ANome:%20%0AQuantas%20pessoas:%20"
+    }
+  },
+  "sections": {
+    "about": {
+      "enabled": true,
+      "title": "O Rolê",
+      "text": "Dress code, energia e aviso: aqui é festa anual estilo Project X. Chega cedo, respeita o espaço e vem pra somar."
+    },
+    "rules": {
+      "enabled": true,
+      "title": "Regras do Jogo",
+      "bullets": [
+        "Sem treta. Se deu, tá fora.",
+        "Respeito total com a casa e com geral.",
+        "Não divulgue endereço em público — manda no privado.",
+        "Se beber, não dirija."
+      ]
+    },
+    "schedule": {
+      "enabled": true,
+      "title": "Line-up / Horários",
+      "items": [
+        {
+          "time": "22:00",
+          "label": "Abertura",
+          "detail": "Chegada e aquecimento"
+        },
+        { "time": "23:30", "label": "Pico", "detail": "Som no alto" },
+        { "time": "02:30", "label": "After", "detail": "Só quem é" }
+      ]
+    },
+    "whatToBring": {
+      "enabled": true,
+      "title": "O que levar",
+      "bullets": [
+        "Sua vibe",
+        "Bebida (se quiser)",
+        "Documento",
+        "Casaco (vai que)"
+      ]
+    },
+    "gallery": {
+      "enabled": true,
+      "title": "Memórias",
+      "images": [
+        "assets/gallery-1.jpg",
+        "assets/gallery-2.jpg",
+        "assets/gallery-3.jpg"
+      ]
+    },
+    "faq": {
+      "enabled": true,
+      "title": "FAQ",
+      "items": [
+        {
+          "q": "Como funciona o OPEN BAR?",
+          "a": "Termos cerveja, cachaça, drinks, refrigerante e água."
+        },
+        {
+          "q": "Pode levar mais alguém?",
+          "a": "Agregados são sempre bem vindos! Só me avisa antes pra eu ter a certeza que temos espaço."
+        },
+        {
+          "q": "Tem estacionamento?",
+          "a": "Temos 4 vagas dentro da casa e sempre tem espaço na rua"
+        },
+        {
+          "q": "O que posso levar?",
+          "a": "Bebidas, comida, etc. Tudo que você quiser."
+        }
+      ]
+    }
+  },
+  "background": {
+    "mode": "slideshow",
+    "images": ["assets/bg-1.jpg", "assets/bg-2.jpg", "assets/bg-3.jpg"],
+    "intervalMs": 6500,
+    "overlayStrength": 0.62,
+    "vignetteStrength": 0.55,
+    "filmGrain": true
+  },
+  "theme": {
+    "accent": "#4ED6D3",
+    "accent2": "#423A90"
+  },
+  "music": {
+    "enabled": true,
+    "src": "assets/songs/Project X - Pursuit of Happiness「Music Video」 - Amanda Florie (youtube).mp3",
+    "startAtSeconds": 45.5,
+    "volume": 0.85,
+    "loop": true,
+    "startLabel": "Abrir convite",
+    "hint": "Aparentemente você é um convidado, clique para entrar."
+  }
+}
