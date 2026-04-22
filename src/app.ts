@@ -4,7 +4,10 @@ type ScheduleItem = { time?: string; label?: string; detail?: string };
 type FaqItem = { q?: string; a?: string };
 
 type BackgroundMosaicConfig = {
+  /** @deprecated use tileMinMobile / tileMinDesktop */
   tileMin?: number;
+  tileMinMobile?: number;
+  tileMinDesktop?: number;
   tileMax?: number;
   gap?: number;
   parallax?: number;
@@ -293,7 +296,11 @@ function setupBackground(bg: Nullable<BackgroundConfig>) {
 }
 
 function renderMosaic(root: HTMLElement, media: string[], mosaicCfg: Nullable<BackgroundMosaicConfig>) {
-  const tileMin = Math.max(80, Number(mosaicCfg?.tileMin ?? 120));
+  const isMobile = window.matchMedia("(max-width: 560px)").matches;
+  const tileMinRaw = isMobile
+    ? Number(mosaicCfg?.tileMinMobile ?? mosaicCfg?.tileMin ?? 50)
+    : Number(mosaicCfg?.tileMinDesktop ?? mosaicCfg?.tileMin ?? 120);
+  const tileMin = Math.max(16, tileMinRaw);
   const tileMax = Math.max(tileMin, Number(mosaicCfg?.tileMax ?? 220));
   const gap = Math.max(0, Number(mosaicCfg?.gap ?? 6));
 
@@ -310,8 +317,6 @@ function renderMosaic(root: HTMLElement, media: string[], mosaicCfg: Nullable<Ba
   const isVideo = (src: string) => /\.(mp4|webm|mov)$/i.test(src);
   const isImage = (src: string) => /\.(png|jpe?g|webp|avif|gif)$/i.test(src);
   const isJpegOnly = (src: string) => /\.jpeg$/i.test(src);
-
-  const isMobile = window.matchMedia("(max-width: 560px)").matches;
 
   const area = Math.max(1, window.innerWidth * window.innerHeight);
   const tileArea = Math.max(1, ((tileMin + tileMax) / 2) ** 2);

@@ -121,7 +121,8 @@
     "vignetteStrength": 0.75,
     "filmGrain": true,
     "mosaic": {
-      "tileMin": 50,
+      "tileMinMobile": 50,
+      "tileMinDesktop": 120,
       "tileMax": 220,
       "gap": 6,
       "parallax": 0.25,
