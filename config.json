@@ -2,14 +2,15 @@
   "event": {
     "title": "Project SantX",
     "subtitle": "Isso mesmo que você está lendo, a festa do ano voltou!",
-    "dateText": "Sábado, 00 de Mês de 2026",
-    "timeText": "A partir das 22:00",
-    "locationName": "Minha casa (endereço completo)",
-    "locationAddress": "Rua Exemplo, 123 — Bairro — Cidade/UF",
+    "dateText": "Sábado, 05 de Dezembro de 2026",
+    "timeText": "A partir das 11:00h",
+    "locationName": "Casa de Praia em Itamaracá",
+    "locationAddress": "Em breve",
     "locationImages": [
-      "assets/local-1.jpg",
-      "assets/local-2.jpg",
-      "assets/local-3.jpg"
+      "assets/local/1.jpeg",
+      "assets/local/2.jpeg",
+      "assets/local/4.jpeg",
+      "assets/local/5.jpeg"
     ],
     "mapsUrl": "https://www.google.com/maps",
     "rsvp": {

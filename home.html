@@ -2,11 +2,244 @@
 <html lang="pt-BR">
   <head>
     <meta charset="utf-8" />
-    <meta http-equiv="refresh" content="0; url=./index.html" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Redirecionando…</title>
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#0B2E33" />
+    <title>Convite</title>
+    <link rel="preload" href="./styles.css?v=20260422" as="style" />
+    <link rel="stylesheet" href="./styles.css?v=20260422" />
   </head>
   <body>
-    <a href="./index.html">Abrir convite</a>
+    <div class="gate" data-gate>
+      <div class="gate__card">
+        <div class="gate__logo" aria-hidden="true"></div>
+        <div class="gate__title" data-bind="event.title">PROJECT X</div>
+        <div class="gate__hint" data-bind="music.hint">
+          Clique para entrar e iniciar a música
+        </div>
+        <button class="btn btn--primary gate__btn" type="button" data-gate-btn>
+          Abrir convite
+        </button>
+      </div>
+    </div>
+
+    <div class="bg" aria-hidden="true">
+      <div class="bg__layer" data-bg-layer="a"></div>
+      <div class="bg__layer" data-bg-layer="b"></div>
+      <div class="bg__overlay" data-bg-overlay></div>
+      <div class="bg__vignette" data-bg-vignette></div>
+      <div class="grain" data-grain></div>
+    </div>
+
+    <audio data-audio preload="auto"></audio>
+    <button
+      class="musicfab"
+      type="button"
+      data-musicfab
+      hidden
+      aria-label="Pausar música"
+      aria-pressed="false"
+    >
+      ⏸
+    </button>
+
+    <header class="topbar">
+      <div class="topbar__in">
+        <div class="brand">
+          <div class="logo" aria-hidden="true"></div>
+          <div class="brand__text">
+            <div class="brand__title" data-bind="event.title">PROJECT X</div>
+            <div class="brand__sub" data-bind="event.dateText">Data</div>
+          </div>
+        </div>
+        <nav class="nav" aria-label="Seções">
+          <a class="chip" href="#info">Info</a>
+          <a class="chip" data-nav="about" href="#about">Rolê</a>
+          <a class="chip" data-nav="schedule" href="#schedule">Horários</a>
+          <a class="chip" data-nav="whatToBring" href="#bring">Levar</a>
+          <a class="chip" data-nav="rules" href="#rules">Regras</a>
+          <a class="chip" data-nav="gallery" href="#gallery">Fotos</a>
+          <a class="chip" data-nav="faq" href="#faq">FAQ</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <div class="hero" id="top">
+        <h1 class="hero__title">
+          <span class="grad" data-bind="event.title">PROJECT X</span>
+        </h1>
+        <p class="hero__subtitle" data-bind="event.subtitle">
+          Convite de aniversário.
+        </p>
+        <div class="hero__cta">
+          <a
+            class="btn btn--primary"
+            data-rsvp-btn
+            href="#"
+            target="_blank"
+            rel="noreferrer"
+            >Confirmar presença</a
+          >
+          <a
+            class="btn"
+            data-href="event.mapsUrl"
+            href="#"
+            target="_blank"
+            rel="noreferrer"
+            >Ver no mapa</a
+          >
+          <a
+            class="btn btn--app"
+            href="https://apps.apple.com/br/app/santa-balb%C3%BArdia-party-games/id6751453390?l=en-GB"
+            target="_blank"
+            rel="noreferrer"
+            ><img
+              class="btn__icon"
+              src="./assets/logosbpng.png"
+              alt=""
+              aria-hidden="true"
+            />Santa Balbúrdia: Party Games</a
+          >
+        </div>
+        <div
+          data-error
+          hidden
+          class="card"
+          style="border-color: rgba(var(--c-gold) / 0.52)"
+        ></div>
+      </div>
+
+      <section class="section" id="info">
+        <div class="section__hd">
+          <h2 class="section__title">Informações</h2>
+          <p class="section__hint">Salva esse link e manda no privado.</p>
+        </div>
+        <div class="cards">
+          <div class="card card--half">
+            <div class="meta">
+              <div class="meta__row">
+                <div class="k">Data</div>
+                <div class="v" data-bind="event.dateText">—</div>
+              </div>
+              <div class="meta__row">
+                <div class="k">Horário</div>
+                <div class="v" data-bind="event.timeText">—</div>
+              </div>
+            </div>
+          </div>
+          <div class="card card--half">
+            <div class="meta">
+              <div class="meta__row">
+                <div class="k">Local</div>
+                <div class="v" data-bind="event.locationName">—</div>
+              </div>
+              <div class="meta__row">
+                <div class="k">Endereço</div>
+                <div class="v" data-bind="event.locationAddress">—</div>
+              </div>
+            </div>
+          </div>
+          <div class="card" data-location-card hidden>
+            <div class="section__hd" style="margin-bottom: 10px">
+              <h3 class="section__title" style="font-size: 14px">Local</h3>
+              <p class="section__hint">Praia de Itamaracá</p>
+            </div>
+            <div class="locallery" data-location-gallery></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="about" data-section="about">
+        <div class="section__hd">
+          <h2 class="section__title" data-bind="about.title">O Rolê</h2>
+          <p class="section__hint">Estilo Project X, mas com consciência.</p>
+        </div>
+        <div class="grid">
+          <div class="panel">
+            <div data-bind="about.text">Texto do rolê.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="schedule" data-section="schedule">
+        <div class="section__hd">
+          <h2 class="section__title" data-bind="schedule.title">
+            Line-up / Horários
+          </h2>
+          <p class="section__hint">Chega no horário pra não perder o pico.</p>
+        </div>
+        <div class="grid">
+          <div class="panel">
+            <div class="timeline" data-schedule></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="bring" data-section="whatToBring">
+        <div class="section__hd">
+          <h2 class="section__title" data-bind="whatToBring.title">
+            O que levar
+          </h2>
+          <p class="section__hint">O básico pra todo mundo curtir.</p>
+        </div>
+        <div class="grid">
+          <div class="panel panel--half">
+            <ul class="list" data-whatToBring></ul>
+          </div>
+          <div class="panel panel--half">
+            <div style="color: rgba(255, 255, 255, 0.74); line-height: 1.5">
+              Dica: se você quiser controlar o público, você pode mandar o link
+              só pra convidados e pedir confirmação no WhatsApp.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="rules" data-section="rules">
+        <div class="section__hd">
+          <h2 class="section__title" data-bind="rules.title">Regras do Jogo</h2>
+          <p class="section__hint">Pra festa ser lendária, não caótica.</p>
+        </div>
+        <div class="grid">
+          <div class="panel">
+            <ul class="list" data-rules></ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="gallery" data-section="gallery">
+        <div class="section__hd">
+          <h2 class="section__title" data-bind="gallery.title">Memórias</h2>
+          <p class="section__hint">Clique pra abrir em tela cheia.</p>
+        </div>
+        <div class="grid">
+          <div class="panel">
+            <div class="gallery" data-gallery></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="faq" data-section="faq">
+        <div class="section__hd">
+          <h2 class="section__title" data-bind="faq.title">FAQ</h2>
+          <p class="section__hint">Perguntas rápidas, respostas diretas.</p>
+        </div>
+        <div class="grid">
+          <div class="panel">
+            <div class="faq" data-faq></div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <div>
+          <strong>Importante:</strong> não divulgue endereço em público. Envie o
+          convite no privado.
+        </div>
+      </footer>
+    </main>
+
+    <script src="./app.js?v=20260422"></script>
   </body>
 </html>

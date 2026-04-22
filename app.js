@@ -1,5 +1,5 @@
 async function loadConfig() {
-  const res = await fetch("./config.json", { cache: "no-store" });
+  const res = await fetch(`./config.json?v=${Date.now()}`, { cache: "no-store" });
   if (!res.ok) throw new Error(`Falha ao carregar config.json (${res.status})`);
   return await res.json();
 }
