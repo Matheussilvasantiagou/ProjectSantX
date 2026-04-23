@@ -3,6 +3,9 @@ type Nullable<T> = T | null | undefined;
 type ScheduleItem = { time?: string; label?: string; detail?: string };
 type FaqItem = { q?: string; a?: string };
 
+const mosaicResizeControllers = new WeakMap<HTMLElement, AbortController>();
+const mosaicLastViewport = new WeakMap<HTMLElement, { w: number; h: number }>();
+
 type BackgroundMosaicConfig = {
   /** @deprecated use tileMinMobile / tileMinDesktop */
   tileMin?: number;
@@ -194,15 +197,15 @@ function renderFaq(items: FaqItem[] = []) {
 
 function escapeHtml(s: unknown) {
   return String(s)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
 function escapeAttr(s: unknown) {
-  return String(s).replaceAll('"', "&quot;");
+  return String(s).replace(/"/g, "&quot;");
 }
 
 function setTheme(theme: Nullable<ThemeConfig>) {
@@ -305,8 +308,8 @@ function renderMosaic(root: HTMLElement, media: string[], mosaicCfg: Nullable<Ba
   const gap = Math.max(0, Number(mosaicCfg?.gap ?? 6));
 
   const pickTile = () => {
-    const r = Math.random();
-    const size = Math.round(tileMin + (tileMax - tileMin) * r);
+    // No mobile, mantém estável pra evitar "pulos" enquanto o viewport muda durante o loading.
+    const size = isMobile ? Math.round(tileMin) : Math.round(tileMin + (tileMax - tileMin) * Math.random());
     root.style.setProperty("--tile", `${size}px`);
     root.style.setProperty("--gap", `${gap}px`);
   };
@@ -318,7 +321,8 @@ function renderMosaic(root: HTMLElement, media: string[], mosaicCfg: Nullable<Ba
   const isImage = (src: string) => /\.(png|jpe?g|webp|avif|gif)$/i.test(src);
   const isJpegOnly = (src: string) => /\.jpeg$/i.test(src);
 
-  const area = Math.max(1, window.innerWidth * window.innerHeight);
+  const vh = window.visualViewport?.height ?? window.innerHeight;
+  const area = Math.max(1, window.innerWidth * vh);
   const tileArea = Math.max(1, ((tileMin + tileMax) / 2) ** 2);
   const density = isMobile ? 0.65 : 1.35;
   const minTiles = isMobile ? 10 : 18;
@@ -380,12 +384,29 @@ function renderMosaic(root: HTMLElement, media: string[], mosaicCfg: Nullable<Ba
     root.appendChild(tile);
   }
 
+  // Garante apenas 1 listener por root (evita re-render em cascata).
+  mosaicResizeControllers.get(root)?.abort();
+  const controller = new AbortController();
+  mosaicResizeControllers.set(root, controller);
+
   let t = 0;
   const onResize = () => {
+    const w = window.innerWidth;
+    const h = window.visualViewport?.height ?? window.innerHeight;
+    const last = mosaicLastViewport.get(root);
+    mosaicLastViewport.set(root, { w, h });
+
+    // No mobile, ignora "micro resizes" comuns durante o loading (barra do navegador).
+    if (isMobile && last) {
+      const dw = Math.abs(w - last.w);
+      const dh = Math.abs(h - last.h);
+      if (dw < 2 && dh < 120) return;
+    }
+
     window.clearTimeout(t);
-    t = window.setTimeout(() => renderMosaic(root, media, mosaicCfg), 180);
+    t = window.setTimeout(() => renderMosaic(root, media, mosaicCfg), 220);
   };
-  window.addEventListener("resize", onResize, { passive: true });
+  window.addEventListener("resize", onResize, { passive: true, signal: controller.signal });
 }
 
 function clampInt(n: unknown, min: number, max: number) {
@@ -401,11 +422,11 @@ function clamp01(x: unknown) {
 }
 
 function buildWhatsappLink(phoneE164: Nullable<string>, prefill: Nullable<string>) {
-  const phone = String(phoneE164 ?? "").replaceAll(/[^\d+]/g, "");
+  const phone = String(phoneE164 ?? "").replace(/[^\d+]/g, "");
   const text = String(prefill ?? "");
   if (!phone) return "";
-  const encoded = encodeURIComponent(text).replaceAll("%250A", "%0A");
-  const digits = phone.replaceAll("+", "");
+  const encoded = encodeURIComponent(text).replace(/%250A/g, "%0A");
+  const digits = phone.replace(/\+/g, "");
   return `https://wa.me/${digits}?text=${encoded}`;
 }
 
@@ -547,6 +568,50 @@ function setupMusic(musicCfg: Nullable<MusicConfig>) {
   audio.addEventListener("pause", () => setFab(false));
 }
 
+function preloadAssets(cfg: AppConfig) {
+  const isMobile = window.matchMedia("(max-width: 560px)").matches;
+  const bg = cfg?.background ?? {};
+  const sections = cfg?.sections ?? {};
+  const ev = cfg?.event ?? {};
+
+  const dedupe = (arr: string[]) => [...new Set(arr.filter(Boolean))];
+  const isVideo = (src: string) => /\.(mp4|webm|mov)$/i.test(src);
+  const isImage = (src: string) => /\.(png|jpe?g|webp|avif|gif)$/i.test(src);
+
+  const backgroundMedia = Array.isArray(bg?.media) ? bg.media : [];
+  const backgroundImages = Array.isArray(bg?.images) ? bg.images : [];
+  const galleryImages = Array.isArray(sections?.gallery?.images) ? sections.gallery!.images! : [];
+  const locationImages = Array.isArray(ev?.locationImages) ? ev.locationImages : [];
+
+  // Ordem importa: prioriza o que aparece primeiro (fundo + local + galeria)
+  const all = dedupe([...backgroundMedia, ...backgroundImages, ...locationImages, ...galleryImages]);
+  const images = all.filter((s) => isImage(s));
+  const videos = all.filter((s) => isVideo(s));
+
+  // Preload de imagens: esquenta cache sem bloquear UI
+  for (const src of images) {
+    const img = new Image();
+    img.decoding = "async";
+    img.loading = "eager";
+    img.src = src;
+  }
+
+  // Preload de vídeos: apenas metadata (não baixa o vídeo inteiro).
+  // Em mobile isso também ajuda a reduzir o "primeiro play", sem pesar tanto.
+  for (const src of videos) {
+    const v = document.createElement("video");
+    v.preload = "metadata";
+    v.muted = true;
+    v.playsInline = true;
+    v.src = src;
+    try {
+      v.load();
+    } catch {
+      // ignore
+    }
+  }
+}
+
 function showError(err: unknown) {
   const box = qs<HTMLElement>("[data-error]");
   if (!box) return;
@@ -559,6 +624,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     const cfg = await loadConfig();
     applyConfig(cfg);
     setupMusic(cfg?.music);
+    // Já na tela do "Abrir convite", começa a esquentar as mídias da próxima tela.
+    const start = () => preloadAssets(cfg);
+    if ("requestIdleCallback" in window) (window as any).requestIdleCallback(start, { timeout: 1200 });
+    else globalThis.setTimeout(start, 250);
     document.title = cfg?.event?.title ? `${cfg.event.title}` : "Convite";
   } catch (e) {
     console.error(e);
