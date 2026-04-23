@@ -208,6 +208,12 @@ function escapeAttr(s: unknown) {
   return String(s).replace(/"/g, "&quot;");
 }
 
+function setVisualVhCssVar() {
+  const vh = window.visualViewport?.height ?? window.innerHeight;
+  const vvh = Math.max(1, vh) / 100;
+  document.documentElement.style.setProperty("--vvh", `${vvh}px`);
+}
+
 function setTheme(theme: Nullable<ThemeConfig>) {
   if (!theme) return;
   const r = document.documentElement;
@@ -220,6 +226,7 @@ function setupBackground(bg: Nullable<BackgroundConfig>) {
   const layerB = qs<HTMLElement>("[data-bg-layer='b']");
   const mosaicRoot = qs<HTMLElement>("[data-bg-mosaic]");
   const mosaicClone = qs<HTMLElement>("[data-bg-mosaic-clone]");
+  const mosaicTrack = qs<HTMLElement>("[data-bg-mosaic-track]");
   const overlay = qs<HTMLElement>("[data-bg-overlay]");
   const vignette = qs<HTMLElement>("[data-bg-vignette]");
   const grain = qs<HTMLElement>("[data-grain]");
@@ -257,6 +264,13 @@ function setupBackground(bg: Nullable<BackgroundConfig>) {
       const gap = mosaicRoot.style.getPropertyValue("--gap");
       if (tile) mosaicClone.style.setProperty("--tile", tile);
       if (gap) mosaicClone.style.setProperty("--gap", gap);
+    }
+    // Depois de atualizar DOM, "rearmar" a animação do track ajuda o browser
+    // a não pausar/ficar fora de sincronia em mobile (vh mudando durante load).
+    if (mosaicTrack) {
+      mosaicTrack.style.animation = "none";
+      mosaicTrack.getBoundingClientRect(); // force reflow
+      mosaicTrack.style.animation = "";
     }
     return;
   }
@@ -632,6 +646,11 @@ function showError(err: unknown) {
 
 document.addEventListener("DOMContentLoaded", async () => {
   try {
+    setVisualVhCssVar();
+    const onVhChange = () => setVisualVhCssVar();
+    window.addEventListener("resize", onVhChange, { passive: true });
+    window.visualViewport?.addEventListener("resize", onVhChange, { passive: true });
+
     const cfg = await loadConfig();
     applyConfig(cfg);
     setupMusic(cfg?.music);

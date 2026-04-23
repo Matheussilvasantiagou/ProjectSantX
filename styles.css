@@ -208,15 +208,17 @@ a {
   position: absolute;
   inset: -24px;
   display: flex;
-  /* 2 mosaicos lado a lado, cada um com bleed de 24px em ambos lados */
-  width: calc(200vw + 96px);
+  flex-direction: column;
+  /* 2 mosaicos empilhados (cima + baixo), com bleed de 24px em ambos lados */
+  height: calc((var(--vvh, 1vh) * 200) + 96px);
   will-change: transform;
-  animation: mosaic-track-x 140s linear infinite reverse;
+  animation: mosaic-track-y 90s linear infinite;
 }
 .bg__mosaic{
   position: relative;
   inset: auto;
-  flex: 0 0 calc(100vw + 48px);
+  /* usa vvh (visual viewport) pra não oscilar com barra do navegador no mobile */
+  flex: 0 0 calc((var(--vvh, 1vh) * 100) + 48px);
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(var(--tile, 160px), 1fr));
   grid-auto-rows: var(--tile, 160px);
@@ -341,12 +343,13 @@ a {
   }
 }
 
-@keyframes mosaic-track-x {
+@keyframes mosaic-track-y {
   from {
     transform: translate3d(0, 0, 0);
   }
   to {
-    transform: translate3d(-50%, 0, 0);
+    /* Move exatamente 1 mosaico (vvh*100 + 48px) para cima */
+    transform: translate3d(0, calc(-1 * ((var(--vvh, 1vh) * 100) + 48px)), 0);
   }
 }
 
