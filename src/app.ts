@@ -219,6 +219,7 @@ function setupBackground(bg: Nullable<BackgroundConfig>) {
   const layerA = qs<HTMLElement>("[data-bg-layer='a']");
   const layerB = qs<HTMLElement>("[data-bg-layer='b']");
   const mosaicRoot = qs<HTMLElement>("[data-bg-mosaic]");
+  const mosaicClone = qs<HTMLElement>("[data-bg-mosaic-clone]");
   const overlay = qs<HTMLElement>("[data-bg-overlay]");
   const vignette = qs<HTMLElement>("[data-bg-vignette]");
   const grain = qs<HTMLElement>("[data-grain]");
@@ -241,6 +242,7 @@ function setupBackground(bg: Nullable<BackgroundConfig>) {
       layerB.classList.remove("is-on");
       mosaicRoot.innerHTML = "";
       mosaicRoot.style.display = "none";
+      if (mosaicClone) mosaicClone.innerHTML = "";
       return;
     }
 
@@ -248,6 +250,14 @@ function setupBackground(bg: Nullable<BackgroundConfig>) {
     layerB.classList.remove("is-on");
     mosaicRoot.style.display = "grid";
     renderMosaic(mosaicRoot, media, bg?.mosaic);
+    if (mosaicClone) {
+      mosaicClone.style.display = "grid";
+      mosaicClone.innerHTML = mosaicRoot.innerHTML;
+      const tile = mosaicRoot.style.getPropertyValue("--tile");
+      const gap = mosaicRoot.style.getPropertyValue("--gap");
+      if (tile) mosaicClone.style.setProperty("--tile", tile);
+      if (gap) mosaicClone.style.setProperty("--gap", gap);
+    }
     return;
   }
 
@@ -278,6 +288,7 @@ function setupBackground(bg: Nullable<BackgroundConfig>) {
   if (mosaicRoot) {
     mosaicRoot.innerHTML = "";
     mosaicRoot.style.display = "none";
+    if (mosaicClone) mosaicClone.innerHTML = "";
   }
 
   if (mode !== "slideshow" || images.length === 1) return;
