@@ -114,11 +114,13 @@
       "assets/partyImages/18.jpeg",
       "assets/partyImages/20.jpeg",
       "assets/partyImages/21.jpeg",
-      "assets/partyImages/22.jpeg"
+      "assets/partyImages/22.jpeg",
+      "assets/partyImages/35.mp4",
+      "assets/partyImages/25.mp4"
     ],
     "intervalMs": 6500,
-    "overlayStrength": 1,
-    "vignetteStrength": 0.75,
+    "overlayStrength": 0.8,
+    "vignetteStrength": 0.5,
     "filmGrain": true,
     "mosaic": {
       "tileMinMobile": 50,
