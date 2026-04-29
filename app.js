@@ -259,7 +259,7 @@
     };
     const baseMedia = isMobile ? media.filter((s) => !isVideo(s)) : media;
     const chosen = shuffle([...baseMedia]);
-    count = chosen.length;
+    count = Math.max(chosen.length, minTiles);
     for (let i = 0; i < count; i++) {
       const src = chosen[i % chosen.length];
       const tile2 = document.createElement("div");

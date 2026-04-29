@@ -929,9 +929,8 @@ a {
 
   /* Background mais leve no mobile */
   .bg__mosaic {
-    --tile: 120px;
     --gap: 4px;
-    transform: scale(1.02);
+    transform: none;
   }
   .grain {
     opacity: 0.06;
