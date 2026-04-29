@@ -384,7 +384,9 @@ function renderMosaic(root: HTMLElement, media: string[], mosaicCfg: Nullable<Ba
   const slack = isMobile ? 1.55 : 1.8;
   const minTiles = Math.max(base, isMobile ? 14 : 26);
   const maxTiles = isMobile ? Math.max(40, base * 3) : Math.max(120, base * 4);
-  const count = clampInt(Math.round(base * slack), minTiles, maxTiles);
+  // Mesmo com cálculo de densidade, aqui vamos permitir renderizar tudo
+  // (o mosaico pode ficar mais pesado se houver muitas imagens).
+  let count = clampInt(Math.round(base * slack), minTiles, maxTiles);
 
   const shuffle = (arr: string[]) => {
     for (let i = arr.length - 1; i > 0; i--) {
@@ -394,17 +396,11 @@ function renderMosaic(root: HTMLElement, media: string[], mosaicCfg: Nullable<Ba
     return arr;
   };
 
-  // No mobile, evita peso: remove vídeos por padrão e prioriza imagens
+  // Mostrar tudo ao mesmo tempo (sem subset aleatório).
+  // No mobile, continua removendo vídeos por padrão (só fotos).
   const baseMedia = isMobile ? media.filter((s) => !isVideo(s)) : media;
-  const pool = shuffle([...baseMedia]);
-  const chosen = pool.length <= count ? pool : pool.slice(0, count);
-  // No desktop, garante 1 vídeo se existir
-  if (!isMobile) {
-    const videoIdx = media.findIndex((s) => isVideo(s));
-    if (videoIdx >= 0 && !chosen.some((s) => isVideo(s))) {
-      chosen[0] = media[videoIdx]!;
-    }
-  }
+  const chosen = shuffle([...baseMedia]);
+  count = chosen.length;
 
   for (let i = 0; i < count; i++) {
     const src = chosen[i % chosen.length]!;

@@ -249,7 +249,7 @@
     const slack = isMobile ? 1.55 : 1.8;
     const minTiles = Math.max(base, isMobile ? 14 : 26);
     const maxTiles = isMobile ? Math.max(40, base * 3) : Math.max(120, base * 4);
-    const count = clampInt(Math.round(base * slack), minTiles, maxTiles);
+    let count = clampInt(Math.round(base * slack), minTiles, maxTiles);
     const shuffle = (arr) => {
       for (let i = arr.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -258,14 +258,8 @@
       return arr;
     };
     const baseMedia = isMobile ? media.filter((s) => !isVideo(s)) : media;
-    const pool = shuffle([...baseMedia]);
-    const chosen = pool.length <= count ? pool : pool.slice(0, count);
-    if (!isMobile) {
-      const videoIdx = media.findIndex((s) => isVideo(s));
-      if (videoIdx >= 0 && !chosen.some((s) => isVideo(s))) {
-        chosen[0] = media[videoIdx];
-      }
-    }
+    const chosen = shuffle([...baseMedia]);
+    count = chosen.length;
     for (let i = 0; i < count; i++) {
       const src = chosen[i % chosen.length];
       const tile2 = document.createElement("div");
