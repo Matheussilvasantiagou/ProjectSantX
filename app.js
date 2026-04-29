@@ -56,6 +56,8 @@
       a.target = "_blank";
       a.rel = "noreferrer";
       a.innerHTML = `<img alt="Foto da festa" loading="lazy" src="${escapeAttr(src)}" />`;
+      const img = a.querySelector("img");
+      if (img) setImageFallback(img, "assets/partyImages/1.jpeg");
       root.appendChild(a);
     }
   }
@@ -78,6 +80,8 @@
       a.target = "_blank";
       a.rel = "noreferrer";
       a.innerHTML = `<img alt="Foto do local" loading="lazy" src="${escapeAttr(src)}" />`;
+      const img = a.querySelector("img");
+      if (img) setImageFallback(img, "assets/local/1.jpeg");
       root.appendChild(a);
     }
   }
@@ -100,6 +104,20 @@
   }
   function escapeAttr(s) {
     return String(s).replace(/"/g, "&quot;");
+  }
+  function setImageFallback(img, fallbackSrc) {
+    const fb = String(fallbackSrc != null ? fallbackSrc : "").trim();
+    if (!fb) return;
+    img.addEventListener(
+      "error",
+      () => {
+        var _a;
+        if (((_a = img.dataset) == null ? void 0 : _a.fallbackApplied) === "1") return;
+        img.dataset.fallbackApplied = "1";
+        img.src = fb;
+      },
+      { once: true }
+    );
   }
   function setVisualVhCssVar() {
     var _a, _b, _c, _d;
@@ -224,9 +242,9 @@
     const vh = (_h = (_g = window.visualViewport) == null ? void 0 : _g.height) != null ? _h : window.innerHeight;
     const area = Math.max(1, window.innerWidth * vh);
     const tileArea = Math.max(1, ((tileMin + tileMax) / 2) ** 2);
-    const density = isMobile ? 0.65 : 1.35;
-    const minTiles = isMobile ? 10 : 18;
-    const maxTiles = isMobile ? 22 : 72;
+    const density = isMobile ? 0.52 : 1.35;
+    const minTiles = isMobile ? 8 : 18;
+    const maxTiles = isMobile ? 18 : 72;
     const count = clampInt(Math.round(area / tileArea * density), minTiles, maxTiles);
     const shuffle = (arr) => {
       for (let i = arr.length - 1; i > 0; i--) {
@@ -294,6 +312,73 @@
     };
     window.addEventListener("resize", onResize, { passive: true, signal: controller.signal });
   }
+  function setupActiveNav() {
+    var _a, _b;
+    const chips = Array.from(document.querySelectorAll(".chip[data-nav]"));
+    if (!chips.length) return;
+    const byId = /* @__PURE__ */ new Map();
+    for (const chip of chips) {
+      const id = chip.getAttribute("data-nav");
+      if (id) byId.set(id, chip);
+    }
+    const sectionIds = Array.from(byId.keys());
+    const sections = sectionIds.map((id) => document.getElementById(id)).filter((el) => !!el);
+    if (!sections.length) return;
+    const setActive = (id) => {
+      for (const [k, chip] of byId) chip.classList.toggle("is-active", k === id);
+    };
+    setActive((_b = (_a = sections[0]) == null ? void 0 : _a.id) != null ? _b : "info");
+    const io = new IntersectionObserver(
+      (entries) => {
+        var _a2;
+        const visible = entries.filter((e) => e.isIntersecting).sort((a, b) => {
+          var _a3, _b2;
+          return ((_a3 = b.intersectionRatio) != null ? _a3 : 0) - ((_b2 = a.intersectionRatio) != null ? _b2 : 0);
+        });
+        const top = (_a2 = visible[0]) == null ? void 0 : _a2.target;
+        if (top == null ? void 0 : top.id) setActive(top.id);
+      },
+      {
+        root: null,
+        rootMargin: "-90px 0px -55% 0px",
+        threshold: [0.12, 0.25, 0.35, 0.5, 0.7]
+      }
+    );
+    for (const el of sections) io.observe(el);
+  }
+  function setupStickyCta() {
+    const sticky = qs("[data-sticky-cta]");
+    if (!sticky) return null;
+    const footer = qs(".footer");
+    const onMobile = () => window.matchMedia("(max-width: 560px)").matches;
+    let rsvpAvailable = false;
+    let footerInView = false;
+    const update = () => {
+      const y = window.scrollY || document.documentElement.scrollTop || 0;
+      const shouldShow = onMobile() && rsvpAvailable && !footerInView && y > 240;
+      sticky.hidden = !shouldShow;
+    };
+    if (footer) {
+      const io = new IntersectionObserver(
+        (entries) => {
+          var _a;
+          footerInView = !!((_a = entries[0]) == null ? void 0 : _a.isIntersecting);
+          update();
+        },
+        { root: null, threshold: 0.01 }
+      );
+      io.observe(footer);
+    }
+    window.addEventListener("scroll", () => requestAnimationFrame(update), { passive: true });
+    window.addEventListener("resize", () => requestAnimationFrame(update), { passive: true });
+    update();
+    return {
+      setAvailable: (available) => {
+        rsvpAvailable = available;
+        update();
+      }
+    };
+  }
   function clampInt(n, min, max) {
     const x = Math.round(Number(n));
     if (!Number.isFinite(x)) return min;
@@ -322,7 +407,7 @@
     return `https://wa.me/${digits}?text=${encoded}`;
   }
   function applyConfig(cfg) {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _A, _B, _C, _D, _E, _F;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _A, _B, _C, _D, _E, _F, _G, _H;
     const ev = (_a = cfg == null ? void 0 : cfg.event) != null ? _a : {};
     const sections = (_b = cfg == null ? void 0 : cfg.sections) != null ? _b : {};
     setTheme(cfg == null ? void 0 : cfg.theme);
@@ -348,27 +433,28 @@
         rsvpBtn.hidden = true;
       }
     }
-    setEnabled("about", !!((_i = sections == null ? void 0 : sections.about) == null ? void 0 : _i.enabled));
-    setText("about.title", (_j = sections == null ? void 0 : sections.about) == null ? void 0 : _j.title);
-    setText("about.text", (_k = sections == null ? void 0 : sections.about) == null ? void 0 : _k.text);
-    setEnabled("important", !!((_l = sections == null ? void 0 : sections.important) == null ? void 0 : _l.enabled));
-    setText("important.title", (_m = sections == null ? void 0 : sections.important) == null ? void 0 : _m.title);
-    renderBullets("[data-important]", (_o = (_n = sections == null ? void 0 : sections.important) == null ? void 0 : _n.bullets) != null ? _o : []);
-    setEnabled("rules", !!((_p = sections == null ? void 0 : sections.rules) == null ? void 0 : _p.enabled));
-    setText("rules.title", (_q = sections == null ? void 0 : sections.rules) == null ? void 0 : _q.title);
-    renderBullets("[data-rules]", (_s = (_r = sections == null ? void 0 : sections.rules) == null ? void 0 : _r.bullets) != null ? _s : []);
-    setEnabled("whatToBring", !!((_t = sections == null ? void 0 : sections.whatToBring) == null ? void 0 : _t.enabled));
-    setText("whatToBring.title", (_u = sections == null ? void 0 : sections.whatToBring) == null ? void 0 : _u.title);
-    renderBullets("[data-whatToBring]", (_w = (_v = sections == null ? void 0 : sections.whatToBring) == null ? void 0 : _v.bullets) != null ? _w : []);
-    setEnabled("gallery", !!((_x = sections == null ? void 0 : sections.gallery) == null ? void 0 : _x.enabled));
-    setText("gallery.title", (_y = sections == null ? void 0 : sections.gallery) == null ? void 0 : _y.title);
-    renderGallery((_A = (_z = sections == null ? void 0 : sections.gallery) == null ? void 0 : _z.images) != null ? _A : []);
-    setEnabled("faq", !!((_B = sections == null ? void 0 : sections.faq) == null ? void 0 : _B.enabled));
-    setText("faq.title", (_C = sections == null ? void 0 : sections.faq) == null ? void 0 : _C.title);
-    renderFaq((_E = (_D = sections == null ? void 0 : sections.faq) == null ? void 0 : _D.items) != null ? _E : []);
+    (_j = (_i = globalThis.__stickyCta) == null ? void 0 : _i.setAvailable) == null ? void 0 : _j.call(_i, !!(rsvpEnabled && rsvpLink));
+    setEnabled("about", !!((_k = sections == null ? void 0 : sections.about) == null ? void 0 : _k.enabled));
+    setText("about.title", (_l = sections == null ? void 0 : sections.about) == null ? void 0 : _l.title);
+    setText("about.text", (_m = sections == null ? void 0 : sections.about) == null ? void 0 : _m.text);
+    setEnabled("important", !!((_n = sections == null ? void 0 : sections.important) == null ? void 0 : _n.enabled));
+    setText("important.title", (_o = sections == null ? void 0 : sections.important) == null ? void 0 : _o.title);
+    renderBullets("[data-important]", (_q = (_p = sections == null ? void 0 : sections.important) == null ? void 0 : _p.bullets) != null ? _q : []);
+    setEnabled("rules", !!((_r = sections == null ? void 0 : sections.rules) == null ? void 0 : _r.enabled));
+    setText("rules.title", (_s = sections == null ? void 0 : sections.rules) == null ? void 0 : _s.title);
+    renderBullets("[data-rules]", (_u = (_t = sections == null ? void 0 : sections.rules) == null ? void 0 : _t.bullets) != null ? _u : []);
+    setEnabled("whatToBring", !!((_v = sections == null ? void 0 : sections.whatToBring) == null ? void 0 : _v.enabled));
+    setText("whatToBring.title", (_w = sections == null ? void 0 : sections.whatToBring) == null ? void 0 : _w.title);
+    renderBullets("[data-whatToBring]", (_y = (_x = sections == null ? void 0 : sections.whatToBring) == null ? void 0 : _x.bullets) != null ? _y : []);
+    setEnabled("gallery", !!((_z = sections == null ? void 0 : sections.gallery) == null ? void 0 : _z.enabled));
+    setText("gallery.title", (_A = sections == null ? void 0 : sections.gallery) == null ? void 0 : _A.title);
+    renderGallery((_C = (_B = sections == null ? void 0 : sections.gallery) == null ? void 0 : _B.images) != null ? _C : []);
+    setEnabled("faq", !!((_D = sections == null ? void 0 : sections.faq) == null ? void 0 : _D.enabled));
+    setText("faq.title", (_E = sections == null ? void 0 : sections.faq) == null ? void 0 : _E.title);
+    renderFaq((_G = (_F = sections == null ? void 0 : sections.faq) == null ? void 0 : _F.items) != null ? _G : []);
     for (const chip of document.querySelectorAll("[data-nav]")) {
       const id = chip.getAttribute("data-nav");
-      const enabled = id ? !((_F = qs(`[data-section="${id}"]`)) == null ? void 0 : _F.hidden) : true;
+      const enabled = id ? !((_H = qs(`[data-section="${id}"]`)) == null ? void 0 : _H.hidden) : true;
       chip.hidden = !enabled;
     }
   }
@@ -378,17 +464,17 @@
     const gateBtn = qs("[data-gate-btn]");
     const audio = qs("[data-audio]");
     const fab = qs("[data-musicfab]");
-    if (!gate || !gateBtn || !audio || !fab) return;
+    if (!audio || !fab) return;
     const enabled = !!(musicCfg == null ? void 0 : musicCfg.enabled);
     const src = String((_a = musicCfg == null ? void 0 : musicCfg.src) != null ? _a : "").trim();
     const volume = clamp01((_b = musicCfg == null ? void 0 : musicCfg.volume) != null ? _b : 0.85);
     const loop = (musicCfg == null ? void 0 : musicCfg.loop) !== false;
     const startAtSecondsRaw = Number((_c = musicCfg == null ? void 0 : musicCfg.startAtSeconds) != null ? _c : 0);
     const startAtSeconds = Number.isFinite(startAtSecondsRaw) ? Math.max(0, startAtSecondsRaw) : 0;
-    setTextAll("music.hint", (_d = musicCfg == null ? void 0 : musicCfg.hint) != null ? _d : "Clique para entrar e iniciar a m\xFAsica");
-    gateBtn.textContent = (_e = musicCfg == null ? void 0 : musicCfg.startLabel) != null ? _e : "Abrir convite";
+    setTextAll("music.hint", (_d = musicCfg == null ? void 0 : musicCfg.hint) != null ? _d : "Toque para iniciar a m\xFAsica");
+    if (gateBtn) gateBtn.textContent = (_e = musicCfg == null ? void 0 : musicCfg.startLabel) != null ? _e : "Abrir convite";
     if (!enabled || !src) {
-      gate.hidden = true;
+      if (gate) gate.hidden = true;
       fab.hidden = true;
       return;
     }
@@ -423,11 +509,26 @@
       setFab(false);
     };
     audio.addEventListener("loadedmetadata", seekToStart, { once: true });
-    gateBtn.addEventListener("click", async () => {
-      gate.hidden = true;
-      fab.hidden = false;
-      await play();
-    });
+    if (gate && gateBtn) {
+      gateBtn.addEventListener("click", async () => {
+        gate.hidden = true;
+        fab.hidden = false;
+        await play();
+      });
+    } else {
+      fab.hidden = true;
+      const unlock = async () => {
+        fab.hidden = false;
+        await play();
+      };
+      const onPointer = () => void unlock();
+      const onKey = (e) => {
+        if (e.key === "Tab") return;
+        void unlock();
+      };
+      window.addEventListener("pointerdown", onPointer, { once: true, passive: true });
+      window.addEventListener("keydown", onKey, { once: true });
+    }
     fab.addEventListener("click", async () => {
       if (audio.paused) await play();
       else pause();
@@ -481,6 +582,13 @@
       const onVhChange = () => setVisualVhCssVar();
       window.addEventListener("resize", onVhChange, { passive: true });
       (_a = window.visualViewport) == null ? void 0 : _a.addEventListener("resize", onVhChange, { passive: true });
+      setupActiveNav();
+      globalThis.__stickyCta = setupStickyCta();
+      const onVis = () => {
+        document.documentElement.style.setProperty("--mosaic-play", document.hidden ? "paused" : "running");
+      };
+      document.addEventListener("visibilitychange", onVis, { passive: true });
+      onVis();
       const cfg = await loadConfig();
       applyConfig(cfg);
       setupMusic(cfg == null ? void 0 : cfg.music);
