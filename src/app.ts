@@ -42,6 +42,7 @@ type MusicConfig = {
 
 type SectionsConfig = {
   about?: { enabled?: boolean; title?: string; text?: string };
+  important?: { enabled?: boolean; title?: string; bullets?: string[] };
   rules?: { enabled?: boolean; title?: string; bullets?: string[] };
   schedule?: { enabled?: boolean; title?: string; items?: ScheduleItem[] };
   whatToBring?: { enabled?: boolean; title?: string; bullets?: string[] };
@@ -385,9 +386,8 @@ function renderMosaic(root: HTMLElement, media: string[], mosaicCfg: Nullable<Ba
     if (isVideo(src)) {
       const v = document.createElement("video");
       v.src = src;
-      v.muted = true;
+      forceMutedInline(v);
       v.loop = true;
-      v.playsInline = true;
       v.autoplay = true;
       v.preload = "metadata";
       tile.appendChild(v);
@@ -446,6 +446,18 @@ function clamp01(x: unknown) {
   return Math.min(1, Math.max(0, n));
 }
 
+function forceMutedInline(v: HTMLVideoElement) {
+  // iOS/Safari: além de `muted`, garanta `defaultMuted` + atributo.
+  // `volume=0` evita casos raros de áudio “vazar”.
+  v.muted = true;
+  v.defaultMuted = true;
+  v.volume = 0;
+  v.playsInline = true;
+  v.setAttribute("muted", "");
+  v.setAttribute("playsinline", "");
+  v.setAttribute("webkit-playsinline", "");
+}
+
 function buildWhatsappLink(phoneE164: Nullable<string>, prefill: Nullable<string>) {
   const phone = String(phoneE164 ?? "").replace(/[^\d+]/g, "");
   const text = String(prefill ?? "");
@@ -490,13 +502,13 @@ function applyConfig(cfg: AppConfig) {
   setText("about.title", sections?.about?.title);
   setText("about.text", sections?.about?.text);
 
+  setEnabled("important", !!sections?.important?.enabled);
+  setText("important.title", sections?.important?.title);
+  renderBullets("[data-important]", sections?.important?.bullets ?? []);
+
   setEnabled("rules", !!sections?.rules?.enabled);
   setText("rules.title", sections?.rules?.title);
   renderBullets("[data-rules]", sections?.rules?.bullets ?? []);
-
-  setEnabled("schedule", !!sections?.schedule?.enabled);
-  setText("schedule.title", sections?.schedule?.title);
-  renderSchedule(sections?.schedule?.items ?? []);
 
   setEnabled("whatToBring", !!sections?.whatToBring?.enabled);
   setText("whatToBring.title", sections?.whatToBring?.title);
@@ -626,8 +638,7 @@ function preloadAssets(cfg: AppConfig) {
   for (const src of videos) {
     const v = document.createElement("video");
     v.preload = "metadata";
-    v.muted = true;
-    v.playsInline = true;
+    forceMutedInline(v);
     v.src = src;
     try {
       v.load();

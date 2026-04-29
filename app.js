@@ -1,7 +1,494 @@
-"use strict";(()=>{var K=new WeakMap,Q=new WeakMap;async function ee(){let t=await fetch(`./config.json?v=${Date.now()}`,{cache:"no-store"});if(!t.ok)throw new Error(`Falha ao carregar config.json (${t.status})`);return await t.json()}function d(t,n=document){return n.querySelector(t)}function N(t,n){let e=d(`[data-bind="${t}"]`);e&&(e.textContent=n!=null?n:"")}function S(t,n){let e=document.querySelectorAll(`[data-bind="${t}"]`);for(let a of e)a.textContent=n!=null?n:""}function te(t,n){let e=d(`[data-href="${t}"]`);if(e){if(!n){e.setAttribute("aria-disabled","true"),e.removeAttribute("href");return}e.setAttribute("href",n)}}function I(t,n){let e=d(`[data-section="${t}"]`);e&&(e.hidden=!n)}function X(t,n=[]){let e=d(t);if(e){e.innerHTML="";for(let a of n){let r=document.createElement("li");r.textContent=a,e.appendChild(r)}}}function ne(t=[]){var e,a,r;let n=d("[data-schedule]");if(n){n.innerHTML="";for(let i of t){let u=document.createElement("div");u.className="titem",u.innerHTML=`
-      <div class="titem__time">${W((e=i.time)!=null?e:"")}</div>
-      <div>
-        <div class="titem__label">${W((a=i.label)!=null?a:"")}</div>
-        <div class="titem__detail">${W((r=i.detail)!=null?r:"")}</div>
-      </div>
-    `,n.appendChild(u)}}}function ae(t=[]){let n=d("[data-gallery]");if(n){n.innerHTML="";for(let e of t){let a=document.createElement("a");a.className="gimg",a.href=e,a.target="_blank",a.rel="noreferrer",a.innerHTML=`<img alt="Foto da festa" loading="lazy" src="${Z(e)}" />`,n.appendChild(a)}}}function re(t=[]){let n=d("[data-location-card]"),e=d("[data-location-gallery]");if(!n||!e)return;let a=Array.isArray(t)?t.filter(Boolean):[];if(!a.length){n.hidden=!0,e.innerHTML="";return}n.hidden=!1,e.innerHTML="";for(let r of a){let i=document.createElement("a");i.className="locallery__img",i.href=r,i.target="_blank",i.rel="noreferrer",i.innerHTML=`<img alt="Foto do local" loading="lazy" src="${Z(r)}" />`,e.appendChild(i)}}function ie(t=[]){var e,a;let n=d("[data-faq]");if(n){n.innerHTML="";for(let r of t){let i=document.createElement("details");i.className="qa";let u=W((e=r.q)!=null?e:""),M=W((a=r.a)!=null?a:"");i.innerHTML=`<summary>${u}</summary><p>${M}</p>`,n.appendChild(i)}}}function W(t){return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;")}function Z(t){return String(t).replace(/"/g,"&quot;")}function Y(){var e,a;let t=(a=(e=window.visualViewport)==null?void 0:e.height)!=null?a:window.innerHeight,n=Math.max(1,t)/100;document.documentElement.style.setProperty("--vvh",`${n}px`)}function oe(t){if(!t)return;let n=document.documentElement;t.accent&&n.style.setProperty("--accent",t.accent),t.accent2&&n.style.setProperty("--accent2",t.accent2)}function le(t){var f,g,l,c;let n=d("[data-bg-layer='a']"),e=d("[data-bg-layer='b']"),a=d("[data-bg-mosaic]"),r=d("[data-bg-mosaic-clone]"),i=d("[data-bg-mosaic-track]"),u=d("[data-bg-overlay]"),M=d("[data-bg-vignette]"),A=d("[data-grain]");if(!n||!e||!u||!M)return;let w=J((f=t==null?void 0:t.overlayStrength)!=null?f:.62),H=J((g=t==null?void 0:t.vignetteStrength)!=null?g:.55);u.style.opacity=String(w),M.style.opacity=String(H),A&&(A.style.display=t!=null&&t.filmGrain?"block":"none");let y=(l=t==null?void 0:t.mode)!=null?l:"slideshow";if(y==="mosaic"&&a){let b=Array.isArray(t==null?void 0:t.media)?t.media.filter(Boolean):[];if(!b.length){n.style.backgroundImage="linear-gradient(135deg, rgba(var(--c-accent) / 0.22), rgba(var(--c-contrast) / 0.18))",n.classList.add("is-on"),e.classList.remove("is-on"),a.innerHTML="",a.style.display="none",r&&(r.innerHTML="");return}if(n.classList.remove("is-on"),e.classList.remove("is-on"),a.style.display="grid",C(a,b,t==null?void 0:t.mosaic),r){r.style.display="grid",r.innerHTML=a.innerHTML;let E=a.style.getPropertyValue("--tile"),k=a.style.getPropertyValue("--gap");E&&r.style.setProperty("--tile",E),k&&r.style.setProperty("--gap",k)}i&&(i.style.animation="none",i.getBoundingClientRect(),i.style.animation="");return}let p=Array.isArray(t==null?void 0:t.images)?t.images.filter(Boolean):[];if(!p.length){n.style.backgroundImage="linear-gradient(135deg, rgba(var(--c-accent) / 0.22), rgba(var(--c-contrast) / 0.18))",n.classList.add("is-on"),e.classList.remove("is-on"),a&&(a.innerHTML="",a.style.display="none");return}let x=Math.max(2500,Number((c=t==null?void 0:t.intervalMs)!=null?c:6500)),L=0,v=!0,T=(b,E)=>{b.style.backgroundImage=`url("${E}")`};T(n,p[L%p.length]),n.classList.add("is-on"),e.classList.remove("is-on"),a&&(a.innerHTML="",a.style.display="none",r&&(r.innerHTML="")),!(y!=="slideshow"||p.length===1)&&window.setInterval(()=>{L=(L+1)%p.length;let b=p[L];v?(T(e,b),e.classList.add("is-on"),n.classList.remove("is-on")):(T(n,b),n.classList.add("is-on"),e.classList.remove("is-on")),v=!v},x)}function C(t,n,e){var B,q,P,_,V,F,z,j,R;let a=window.matchMedia("(max-width: 560px)").matches,r=Number(a?(q=(B=e==null?void 0:e.tileMinMobile)!=null?B:e==null?void 0:e.tileMin)!=null?q:50:(_=(P=e==null?void 0:e.tileMinDesktop)!=null?P:e==null?void 0:e.tileMin)!=null?_:120),i=Math.max(16,r),u=Math.max(i,Number((V=e==null?void 0:e.tileMax)!=null?V:220)),M=Math.max(0,Number((F=e==null?void 0:e.gap)!=null?F:6));(()=>{let o=Math.round(a?i:i+(u-i)*Math.random());t.style.setProperty("--tile",`${o}px`),t.style.setProperty("--gap",`${M}px`)})(),t.innerHTML="";let w=o=>/\.(mp4|webm|mov)$/i.test(o),H=o=>/\.(png|jpe?g|webp|avif|gif)$/i.test(o),y=o=>/\.jpeg$/i.test(o),p=(j=(z=window.visualViewport)==null?void 0:z.height)!=null?j:window.innerHeight,x=Math.max(1,window.innerWidth*p),L=Math.max(1,((i+u)/2)**2),v=a?.65:1.35,T=a?10:18,f=a?22:72,g=se(Math.round(x/L*v),T,f),l=o=>{for(let m=o.length-1;m>0;m--){let h=Math.floor(Math.random()*(m+1));[o[m],o[h]]=[o[h],o[m]]}return o},c=a?n.filter(o=>!w(o)):n,b=l([...c]),E=b.length<=g?b:b.slice(0,g);if(!a){let o=n.findIndex(m=>w(m));o>=0&&!E.some(m=>w(m))&&(E[0]=n[o])}for(let o=0;o<g;o++){let m=E[o%E.length],h=document.createElement("div");if(h.className="bg__tile",y(m)||h.classList.add("bg__tile--tall"),w(m)){let s=document.createElement("video");s.src=m,s.muted=!0,s.loop=!0,s.playsInline=!0,s.autoplay=!0,s.preload="metadata",h.appendChild(s),s.play().catch(()=>{})}else if(H(m)){let s=document.createElement("img");s.src=m,s.alt="",s.loading="lazy",h.appendChild(s)}else{let s=document.createElement("img");s.src=m,s.alt="",s.loading="lazy",h.appendChild(s)}t.appendChild(h)}(R=K.get(t))==null||R.abort();let k=new AbortController;K.set(t,k);let $=0,D=()=>{var s,U;let o=window.innerWidth,m=(U=(s=window.visualViewport)==null?void 0:s.height)!=null?U:window.innerHeight,h=Q.get(t);if(Q.set(t,{w:o,h:m}),a&&h){let G=Math.abs(o-h.w),O=Math.abs(m-h.h);if(G<2&&O<120)return}window.clearTimeout($),$=window.setTimeout(()=>C(t,n,e),220)};window.addEventListener("resize",D,{passive:!0,signal:k.signal})}function se(t,n,e){let a=Math.round(Number(t));return Number.isFinite(a)?Math.min(e,Math.max(n,a)):n}function J(t){let n=Number(t);return Number.isFinite(n)?Math.min(1,Math.max(0,n)):0}function de(t,n){let e=String(t!=null?t:"").replace(/[^\d+]/g,""),a=String(n!=null?n:"");if(!e)return"";let r=encodeURIComponent(a).replace(/%250A/g,"%0A");return`https://wa.me/${e.replace(/\+/g,"")}?text=${r}`}function ce(t){var M,A,w,H,y,p,x,L,v,T,f,g,l,c,b,E,k,$,D,B,q,P,_,V,F,z,j,R,o,m,h,s;let n=(M=t==null?void 0:t.event)!=null?M:{},e=(A=t==null?void 0:t.sections)!=null?A:{};oe(t==null?void 0:t.theme),le(t==null?void 0:t.background),S("event.title",n.title),S("event.subtitle",n.subtitle),S("event.dateText",n.dateText),S("event.timeText",n.timeText),S("event.locationName",n.locationName),S("event.locationAddress",n.locationAddress),te("event.mapsUrl",n.mapsUrl),re((w=n.locationImages)!=null?w:[]);let a=!!((H=n==null?void 0:n.rsvp)!=null&&H.enabled),r=(p=(y=n==null?void 0:n.rsvp)==null?void 0:y.ctaText)!=null?p:"Confirmar presen\xE7a",i=de((x=n==null?void 0:n.rsvp)==null?void 0:x.whatsappPhoneE164,(L=n==null?void 0:n.rsvp)==null?void 0:L.whatsappPrefill),u=d("[data-rsvp-btn]");u&&(u.textContent=r,a&&i?(u.href=i,u.hidden=!1):u.hidden=!0),I("about",!!((v=e==null?void 0:e.about)!=null&&v.enabled)),N("about.title",(T=e==null?void 0:e.about)==null?void 0:T.title),N("about.text",(f=e==null?void 0:e.about)==null?void 0:f.text),I("rules",!!((g=e==null?void 0:e.rules)!=null&&g.enabled)),N("rules.title",(l=e==null?void 0:e.rules)==null?void 0:l.title),X("[data-rules]",(b=(c=e==null?void 0:e.rules)==null?void 0:c.bullets)!=null?b:[]),I("schedule",!!((E=e==null?void 0:e.schedule)!=null&&E.enabled)),N("schedule.title",(k=e==null?void 0:e.schedule)==null?void 0:k.title),ne((D=($=e==null?void 0:e.schedule)==null?void 0:$.items)!=null?D:[]),I("whatToBring",!!((B=e==null?void 0:e.whatToBring)!=null&&B.enabled)),N("whatToBring.title",(q=e==null?void 0:e.whatToBring)==null?void 0:q.title),X("[data-whatToBring]",(_=(P=e==null?void 0:e.whatToBring)==null?void 0:P.bullets)!=null?_:[]),I("gallery",!!((V=e==null?void 0:e.gallery)!=null&&V.enabled)),N("gallery.title",(F=e==null?void 0:e.gallery)==null?void 0:F.title),ae((j=(z=e==null?void 0:e.gallery)==null?void 0:z.images)!=null?j:[]),I("faq",!!((R=e==null?void 0:e.faq)!=null&&R.enabled)),N("faq.title",(o=e==null?void 0:e.faq)==null?void 0:o.title),ie((h=(m=e==null?void 0:e.faq)==null?void 0:m.items)!=null?h:[]);for(let U of document.querySelectorAll("[data-nav]")){let G=U.getAttribute("data-nav"),O=G?!((s=d(`[data-section="${G}"]`))!=null&&s.hidden):!0;U.hidden=!O}}function ue(t){var v,T,f,g,l;let n=d("[data-gate]"),e=d("[data-gate-btn]"),a=d("[data-audio]"),r=d("[data-musicfab]");if(!n||!e||!a||!r)return;let i=!!(t!=null&&t.enabled),u=String((v=t==null?void 0:t.src)!=null?v:"").trim(),M=J((T=t==null?void 0:t.volume)!=null?T:.85),A=(t==null?void 0:t.loop)!==!1,w=Number((f=t==null?void 0:t.startAtSeconds)!=null?f:0),H=Number.isFinite(w)?Math.max(0,w):0;if(S("music.hint",(g=t==null?void 0:t.hint)!=null?g:"Clique para entrar e iniciar a m\xFAsica"),e.textContent=(l=t==null?void 0:t.startLabel)!=null?l:"Abrir convite",!i||!u){n.hidden=!0,r.hidden=!0;return}a.src=u,a.loop=A,a.volume=typeof M=="number"?M:.85;let y=c=>{r.textContent=c?"\u23F8":"\u25B6",r.setAttribute("aria-pressed",c?"true":"false"),r.setAttribute("aria-label",c?"Pausar m\xFAsica":"Tocar m\xFAsica")},p=()=>{if(H)try{Number.isFinite(a.duration)&&a.duration>0&&(a.currentTime=Math.min(H,Math.max(0,a.duration-.25)))}catch(c){}},x=async()=>{try{p(),await a.play(),y(!0)}catch(c){y(!1)}},L=()=>{a.pause(),y(!1)};a.addEventListener("loadedmetadata",p,{once:!0}),e.addEventListener("click",async()=>{n.hidden=!0,r.hidden=!1,await x()}),r.addEventListener("click",async()=>{a.paused?await x():L()}),a.addEventListener("play",()=>y(!0)),a.addEventListener("pause",()=>y(!1))}function me(t){var v,T,f,g;let n=window.matchMedia("(max-width: 560px)").matches,e=(v=t==null?void 0:t.background)!=null?v:{},a=(T=t==null?void 0:t.sections)!=null?T:{},r=(f=t==null?void 0:t.event)!=null?f:{},i=l=>[...new Set(l.filter(Boolean))],u=l=>/\.(mp4|webm|mov)$/i.test(l),M=l=>/\.(png|jpe?g|webp|avif|gif)$/i.test(l),A=Array.isArray(e==null?void 0:e.media)?e.media:[],w=Array.isArray(e==null?void 0:e.images)?e.images:[],H=Array.isArray((g=a==null?void 0:a.gallery)==null?void 0:g.images)?a.gallery.images:[],y=Array.isArray(r==null?void 0:r.locationImages)?r.locationImages:[],p=i([...A,...w,...y,...H]),x=p.filter(l=>M(l)),L=p.filter(l=>u(l));for(let l of x){let c=new Image;c.decoding="async",c.loading="eager",c.src=l}for(let l of L){let c=document.createElement("video");c.preload="metadata",c.muted=!0,c.playsInline=!0,c.src=l;try{c.load()}catch(b){}}}function pe(t){let n=d("[data-error]");n&&(n.hidden=!1,n.textContent=`Erro: ${t instanceof Error?t.message:String(t)}`)}document.addEventListener("DOMContentLoaded",async()=>{var t,n;try{Y();let e=()=>Y();window.addEventListener("resize",e,{passive:!0}),(t=window.visualViewport)==null||t.addEventListener("resize",e,{passive:!0});let a=await ee();ce(a),ue(a==null?void 0:a.music);let r=()=>me(a);"requestIdleCallback"in window?window.requestIdleCallback(r,{timeout:1200}):globalThis.setTimeout(r,250),document.title=(n=a==null?void 0:a.event)!=null&&n.title?`${a.event.title}`:"Convite"}catch(e){console.error(e),pe(e)}});})();
+"use strict";
+(() => {
+  // src/app.ts
+  var mosaicResizeControllers = /* @__PURE__ */ new WeakMap();
+  var mosaicLastViewport = /* @__PURE__ */ new WeakMap();
+  async function loadConfig() {
+    const res = await fetch(`./config.json?v=${Date.now()}`, { cache: "no-store" });
+    if (!res.ok) throw new Error(`Falha ao carregar config.json (${res.status})`);
+    return await res.json();
+  }
+  function qs(sel, root = document) {
+    return root.querySelector(sel);
+  }
+  function setText(id, value) {
+    const el = qs(`[data-bind="${id}"]`);
+    if (!el) return;
+    el.textContent = value != null ? value : "";
+  }
+  function setTextAll(id, value) {
+    const els = document.querySelectorAll(`[data-bind="${id}"]`);
+    for (const el of els) el.textContent = value != null ? value : "";
+  }
+  function setHref(id, value) {
+    const el = qs(`[data-href="${id}"]`);
+    if (!el) return;
+    if (!value) {
+      el.setAttribute("aria-disabled", "true");
+      el.removeAttribute("href");
+      return;
+    }
+    el.setAttribute("href", value);
+  }
+  function setEnabled(sectionId, enabled) {
+    const el = qs(`[data-section="${sectionId}"]`);
+    if (!el) return;
+    el.hidden = !enabled;
+  }
+  function renderBullets(targetSel, bullets = []) {
+    const ul = qs(targetSel);
+    if (!ul) return;
+    ul.innerHTML = "";
+    for (const b of bullets) {
+      const li = document.createElement("li");
+      li.textContent = b;
+      ul.appendChild(li);
+    }
+  }
+  function renderGallery(images = []) {
+    const root = qs("[data-gallery]");
+    if (!root) return;
+    root.innerHTML = "";
+    for (const src of images) {
+      const a = document.createElement("a");
+      a.className = "gimg";
+      a.href = src;
+      a.target = "_blank";
+      a.rel = "noreferrer";
+      a.innerHTML = `<img alt="Foto da festa" loading="lazy" src="${escapeAttr(src)}" />`;
+      root.appendChild(a);
+    }
+  }
+  function renderLocationGallery(images = []) {
+    const card = qs("[data-location-card]");
+    const root = qs("[data-location-gallery]");
+    if (!card || !root) return;
+    const list = Array.isArray(images) ? images.filter(Boolean) : [];
+    if (!list.length) {
+      card.hidden = true;
+      root.innerHTML = "";
+      return;
+    }
+    card.hidden = false;
+    root.innerHTML = "";
+    for (const src of list) {
+      const a = document.createElement("a");
+      a.className = "locallery__img";
+      a.href = src;
+      a.target = "_blank";
+      a.rel = "noreferrer";
+      a.innerHTML = `<img alt="Foto do local" loading="lazy" src="${escapeAttr(src)}" />`;
+      root.appendChild(a);
+    }
+  }
+  function renderFaq(items = []) {
+    var _a, _b;
+    const root = qs("[data-faq]");
+    if (!root) return;
+    root.innerHTML = "";
+    for (const it of items) {
+      const d = document.createElement("details");
+      d.className = "qa";
+      const q = escapeHtml((_a = it.q) != null ? _a : "");
+      const a = escapeHtml((_b = it.a) != null ? _b : "");
+      d.innerHTML = `<summary>${q}</summary><p>${a}</p>`;
+      root.appendChild(d);
+    }
+  }
+  function escapeHtml(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+  }
+  function escapeAttr(s) {
+    return String(s).replace(/"/g, "&quot;");
+  }
+  function setVisualVhCssVar() {
+    var _a, _b;
+    const vh = (_b = (_a = window.visualViewport) == null ? void 0 : _a.height) != null ? _b : window.innerHeight;
+    const vvh = Math.max(1, vh) / 100;
+    document.documentElement.style.setProperty("--vvh", `${vvh}px`);
+  }
+  function setTheme(theme) {
+    if (!theme) return;
+    const r = document.documentElement;
+    if (theme.accent) r.style.setProperty("--accent", theme.accent);
+    if (theme.accent2) r.style.setProperty("--accent2", theme.accent2);
+  }
+  function setupBackground(bg) {
+    var _a, _b, _c, _d;
+    const layerA = qs("[data-bg-layer='a']");
+    const layerB = qs("[data-bg-layer='b']");
+    const mosaicRoot = qs("[data-bg-mosaic]");
+    const mosaicClone = qs("[data-bg-mosaic-clone]");
+    const mosaicTrack = qs("[data-bg-mosaic-track]");
+    const overlay = qs("[data-bg-overlay]");
+    const vignette = qs("[data-bg-vignette]");
+    const grain = qs("[data-grain]");
+    if (!layerA || !layerB || !overlay || !vignette) return;
+    const overlayStrength = clamp01((_a = bg == null ? void 0 : bg.overlayStrength) != null ? _a : 0.62);
+    const vignetteStrength = clamp01((_b = bg == null ? void 0 : bg.vignetteStrength) != null ? _b : 0.55);
+    overlay.style.opacity = String(overlayStrength);
+    vignette.style.opacity = String(vignetteStrength);
+    if (grain) grain.style.display = (bg == null ? void 0 : bg.filmGrain) ? "block" : "none";
+    const mode = (_c = bg == null ? void 0 : bg.mode) != null ? _c : "slideshow";
+    if (mode === "mosaic" && mosaicRoot) {
+      const media = Array.isArray(bg == null ? void 0 : bg.media) ? bg.media.filter(Boolean) : [];
+      if (!media.length) {
+        layerA.style.backgroundImage = "linear-gradient(135deg, rgba(var(--c-accent) / 0.22), rgba(var(--c-contrast) / 0.18))";
+        layerA.classList.add("is-on");
+        layerB.classList.remove("is-on");
+        mosaicRoot.innerHTML = "";
+        mosaicRoot.style.display = "none";
+        if (mosaicClone) mosaicClone.innerHTML = "";
+        return;
+      }
+      layerA.classList.remove("is-on");
+      layerB.classList.remove("is-on");
+      mosaicRoot.style.display = "grid";
+      renderMosaic(mosaicRoot, media, bg == null ? void 0 : bg.mosaic);
+      if (mosaicClone) {
+        mosaicClone.style.display = "grid";
+        mosaicClone.innerHTML = mosaicRoot.innerHTML;
+        const tile = mosaicRoot.style.getPropertyValue("--tile");
+        const gap = mosaicRoot.style.getPropertyValue("--gap");
+        if (tile) mosaicClone.style.setProperty("--tile", tile);
+        if (gap) mosaicClone.style.setProperty("--gap", gap);
+      }
+      if (mosaicTrack) {
+        mosaicTrack.style.animation = "none";
+        mosaicTrack.getBoundingClientRect();
+        mosaicTrack.style.animation = "";
+      }
+      return;
+    }
+    const images = Array.isArray(bg == null ? void 0 : bg.images) ? bg.images.filter(Boolean) : [];
+    if (!images.length) {
+      layerA.style.backgroundImage = "linear-gradient(135deg, rgba(var(--c-accent) / 0.22), rgba(var(--c-contrast) / 0.18))";
+      layerA.classList.add("is-on");
+      layerB.classList.remove("is-on");
+      if (mosaicRoot) {
+        mosaicRoot.innerHTML = "";
+        mosaicRoot.style.display = "none";
+      }
+      return;
+    }
+    const intervalMs = Math.max(2500, Number((_d = bg == null ? void 0 : bg.intervalMs) != null ? _d : 6500));
+    let idx = 0;
+    let onA = true;
+    const setLayer = (layer, src) => {
+      layer.style.backgroundImage = `url("${src}")`;
+    };
+    setLayer(layerA, images[idx % images.length]);
+    layerA.classList.add("is-on");
+    layerB.classList.remove("is-on");
+    if (mosaicRoot) {
+      mosaicRoot.innerHTML = "";
+      mosaicRoot.style.display = "none";
+      if (mosaicClone) mosaicClone.innerHTML = "";
+    }
+    if (mode !== "slideshow" || images.length === 1) return;
+    window.setInterval(() => {
+      idx = (idx + 1) % images.length;
+      const nextSrc = images[idx];
+      if (onA) {
+        setLayer(layerB, nextSrc);
+        layerB.classList.add("is-on");
+        layerA.classList.remove("is-on");
+      } else {
+        setLayer(layerA, nextSrc);
+        layerA.classList.add("is-on");
+        layerB.classList.remove("is-on");
+      }
+      onA = !onA;
+    }, intervalMs);
+  }
+  function renderMosaic(root, media, mosaicCfg) {
+    var _a, _b, _c, _d, _e, _f, _g, _h, _i;
+    const isMobile = window.matchMedia("(max-width: 560px)").matches;
+    const tileMinRaw = isMobile ? Number((_b = (_a = mosaicCfg == null ? void 0 : mosaicCfg.tileMinMobile) != null ? _a : mosaicCfg == null ? void 0 : mosaicCfg.tileMin) != null ? _b : 50) : Number((_d = (_c = mosaicCfg == null ? void 0 : mosaicCfg.tileMinDesktop) != null ? _c : mosaicCfg == null ? void 0 : mosaicCfg.tileMin) != null ? _d : 120);
+    const tileMin = Math.max(16, tileMinRaw);
+    const tileMax = Math.max(tileMin, Number((_e = mosaicCfg == null ? void 0 : mosaicCfg.tileMax) != null ? _e : 220));
+    const gap = Math.max(0, Number((_f = mosaicCfg == null ? void 0 : mosaicCfg.gap) != null ? _f : 6));
+    const pickTile = () => {
+      const size = isMobile ? Math.round(tileMin) : Math.round(tileMin + (tileMax - tileMin) * Math.random());
+      root.style.setProperty("--tile", `${size}px`);
+      root.style.setProperty("--gap", `${gap}px`);
+    };
+    pickTile();
+    root.innerHTML = "";
+    const isVideo = (src) => /\.(mp4|webm|mov)$/i.test(src);
+    const isImage = (src) => /\.(png|jpe?g|webp|avif|gif)$/i.test(src);
+    const isJpegOnly = (src) => /\.jpeg$/i.test(src);
+    const vh = (_h = (_g = window.visualViewport) == null ? void 0 : _g.height) != null ? _h : window.innerHeight;
+    const area = Math.max(1, window.innerWidth * vh);
+    const tileArea = Math.max(1, ((tileMin + tileMax) / 2) ** 2);
+    const density = isMobile ? 0.65 : 1.35;
+    const minTiles = isMobile ? 10 : 18;
+    const maxTiles = isMobile ? 22 : 72;
+    const count = clampInt(Math.round(area / tileArea * density), minTiles, maxTiles);
+    const shuffle = (arr) => {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    };
+    const baseMedia = isMobile ? media.filter((s) => !isVideo(s)) : media;
+    const pool = shuffle([...baseMedia]);
+    const chosen = pool.length <= count ? pool : pool.slice(0, count);
+    if (!isMobile) {
+      const videoIdx = media.findIndex((s) => isVideo(s));
+      if (videoIdx >= 0 && !chosen.some((s) => isVideo(s))) {
+        chosen[0] = media[videoIdx];
+      }
+    }
+    for (let i = 0; i < count; i++) {
+      const src = chosen[i % chosen.length];
+      const tile = document.createElement("div");
+      tile.className = "bg__tile";
+      if (!isJpegOnly(src)) tile.classList.add("bg__tile--tall");
+      if (isVideo(src)) {
+        const v = document.createElement("video");
+        v.src = src;
+        forceMutedInline(v);
+        v.loop = true;
+        v.autoplay = true;
+        v.preload = "metadata";
+        tile.appendChild(v);
+        v.play().catch(() => {
+        });
+      } else if (isImage(src)) {
+        const img = document.createElement("img");
+        img.src = src;
+        img.alt = "";
+        img.loading = "lazy";
+        tile.appendChild(img);
+      } else {
+        const img = document.createElement("img");
+        img.src = src;
+        img.alt = "";
+        img.loading = "lazy";
+        tile.appendChild(img);
+      }
+      root.appendChild(tile);
+    }
+    (_i = mosaicResizeControllers.get(root)) == null ? void 0 : _i.abort();
+    const controller = new AbortController();
+    mosaicResizeControllers.set(root, controller);
+    let t = 0;
+    const onResize = () => {
+      var _a2, _b2;
+      const w = window.innerWidth;
+      const h = (_b2 = (_a2 = window.visualViewport) == null ? void 0 : _a2.height) != null ? _b2 : window.innerHeight;
+      const last = mosaicLastViewport.get(root);
+      mosaicLastViewport.set(root, { w, h });
+      if (isMobile && last) {
+        const dw = Math.abs(w - last.w);
+        const dh = Math.abs(h - last.h);
+        if (dw < 2 && dh < 120) return;
+      }
+      window.clearTimeout(t);
+      t = window.setTimeout(() => renderMosaic(root, media, mosaicCfg), 220);
+    };
+    window.addEventListener("resize", onResize, { passive: true, signal: controller.signal });
+  }
+  function clampInt(n, min, max) {
+    const x = Math.round(Number(n));
+    if (!Number.isFinite(x)) return min;
+    return Math.min(max, Math.max(min, x));
+  }
+  function clamp01(x) {
+    const n = Number(x);
+    if (!Number.isFinite(n)) return 0;
+    return Math.min(1, Math.max(0, n));
+  }
+  function forceMutedInline(v) {
+    v.muted = true;
+    v.defaultMuted = true;
+    v.volume = 0;
+    v.playsInline = true;
+    v.setAttribute("muted", "");
+    v.setAttribute("playsinline", "");
+    v.setAttribute("webkit-playsinline", "");
+  }
+  function buildWhatsappLink(phoneE164, prefill) {
+    const phone = String(phoneE164 != null ? phoneE164 : "").replace(/[^\d+]/g, "");
+    const text = String(prefill != null ? prefill : "");
+    if (!phone) return "";
+    const encoded = encodeURIComponent(text).replace(/%250A/g, "%0A");
+    const digits = phone.replace(/\+/g, "");
+    return `https://wa.me/${digits}?text=${encoded}`;
+  }
+  function applyConfig(cfg) {
+    var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _A, _B, _C, _D, _E, _F;
+    const ev = (_a = cfg == null ? void 0 : cfg.event) != null ? _a : {};
+    const sections = (_b = cfg == null ? void 0 : cfg.sections) != null ? _b : {};
+    setTheme(cfg == null ? void 0 : cfg.theme);
+    setupBackground(cfg == null ? void 0 : cfg.background);
+    setTextAll("event.title", ev.title);
+    setTextAll("event.subtitle", ev.subtitle);
+    setTextAll("event.dateText", ev.dateText);
+    setTextAll("event.timeText", ev.timeText);
+    setTextAll("event.locationName", ev.locationName);
+    setTextAll("event.locationAddress", ev.locationAddress);
+    setHref("event.mapsUrl", ev.mapsUrl);
+    renderLocationGallery((_c = ev.locationImages) != null ? _c : []);
+    const rsvpEnabled = !!((_d = ev == null ? void 0 : ev.rsvp) == null ? void 0 : _d.enabled);
+    const rsvpCta = (_f = (_e = ev == null ? void 0 : ev.rsvp) == null ? void 0 : _e.ctaText) != null ? _f : "Confirmar presen\xE7a";
+    const rsvpLink = buildWhatsappLink((_g = ev == null ? void 0 : ev.rsvp) == null ? void 0 : _g.whatsappPhoneE164, (_h = ev == null ? void 0 : ev.rsvp) == null ? void 0 : _h.whatsappPrefill);
+    const rsvpBtn = qs("[data-rsvp-btn]");
+    if (rsvpBtn) {
+      rsvpBtn.textContent = rsvpCta;
+      if (rsvpEnabled && rsvpLink) {
+        rsvpBtn.href = rsvpLink;
+        rsvpBtn.hidden = false;
+      } else {
+        rsvpBtn.hidden = true;
+      }
+    }
+    setEnabled("about", !!((_i = sections == null ? void 0 : sections.about) == null ? void 0 : _i.enabled));
+    setText("about.title", (_j = sections == null ? void 0 : sections.about) == null ? void 0 : _j.title);
+    setText("about.text", (_k = sections == null ? void 0 : sections.about) == null ? void 0 : _k.text);
+    setEnabled("important", !!((_l = sections == null ? void 0 : sections.important) == null ? void 0 : _l.enabled));
+    setText("important.title", (_m = sections == null ? void 0 : sections.important) == null ? void 0 : _m.title);
+    renderBullets("[data-important]", (_o = (_n = sections == null ? void 0 : sections.important) == null ? void 0 : _n.bullets) != null ? _o : []);
+    setEnabled("rules", !!((_p = sections == null ? void 0 : sections.rules) == null ? void 0 : _p.enabled));
+    setText("rules.title", (_q = sections == null ? void 0 : sections.rules) == null ? void 0 : _q.title);
+    renderBullets("[data-rules]", (_s = (_r = sections == null ? void 0 : sections.rules) == null ? void 0 : _r.bullets) != null ? _s : []);
+    setEnabled("whatToBring", !!((_t = sections == null ? void 0 : sections.whatToBring) == null ? void 0 : _t.enabled));
+    setText("whatToBring.title", (_u = sections == null ? void 0 : sections.whatToBring) == null ? void 0 : _u.title);
+    renderBullets("[data-whatToBring]", (_w = (_v = sections == null ? void 0 : sections.whatToBring) == null ? void 0 : _v.bullets) != null ? _w : []);
+    setEnabled("gallery", !!((_x = sections == null ? void 0 : sections.gallery) == null ? void 0 : _x.enabled));
+    setText("gallery.title", (_y = sections == null ? void 0 : sections.gallery) == null ? void 0 : _y.title);
+    renderGallery((_A = (_z = sections == null ? void 0 : sections.gallery) == null ? void 0 : _z.images) != null ? _A : []);
+    setEnabled("faq", !!((_B = sections == null ? void 0 : sections.faq) == null ? void 0 : _B.enabled));
+    setText("faq.title", (_C = sections == null ? void 0 : sections.faq) == null ? void 0 : _C.title);
+    renderFaq((_E = (_D = sections == null ? void 0 : sections.faq) == null ? void 0 : _D.items) != null ? _E : []);
+    for (const chip of document.querySelectorAll("[data-nav]")) {
+      const id = chip.getAttribute("data-nav");
+      const enabled = id ? !((_F = qs(`[data-section="${id}"]`)) == null ? void 0 : _F.hidden) : true;
+      chip.hidden = !enabled;
+    }
+  }
+  function setupMusic(musicCfg) {
+    var _a, _b, _c, _d, _e;
+    const gate = qs("[data-gate]");
+    const gateBtn = qs("[data-gate-btn]");
+    const audio = qs("[data-audio]");
+    const fab = qs("[data-musicfab]");
+    if (!gate || !gateBtn || !audio || !fab) return;
+    const enabled = !!(musicCfg == null ? void 0 : musicCfg.enabled);
+    const src = String((_a = musicCfg == null ? void 0 : musicCfg.src) != null ? _a : "").trim();
+    const volume = clamp01((_b = musicCfg == null ? void 0 : musicCfg.volume) != null ? _b : 0.85);
+    const loop = (musicCfg == null ? void 0 : musicCfg.loop) !== false;
+    const startAtSecondsRaw = Number((_c = musicCfg == null ? void 0 : musicCfg.startAtSeconds) != null ? _c : 0);
+    const startAtSeconds = Number.isFinite(startAtSecondsRaw) ? Math.max(0, startAtSecondsRaw) : 0;
+    setTextAll("music.hint", (_d = musicCfg == null ? void 0 : musicCfg.hint) != null ? _d : "Clique para entrar e iniciar a m\xFAsica");
+    gateBtn.textContent = (_e = musicCfg == null ? void 0 : musicCfg.startLabel) != null ? _e : "Abrir convite";
+    if (!enabled || !src) {
+      gate.hidden = true;
+      fab.hidden = true;
+      return;
+    }
+    audio.src = src;
+    audio.loop = loop;
+    audio.volume = typeof volume === "number" ? volume : 0.85;
+    const setFab = (isPlaying) => {
+      fab.textContent = isPlaying ? "\u23F8" : "\u25B6";
+      fab.setAttribute("aria-pressed", isPlaying ? "true" : "false");
+      fab.setAttribute("aria-label", isPlaying ? "Pausar m\xFAsica" : "Tocar m\xFAsica");
+    };
+    const seekToStart = () => {
+      if (!startAtSeconds) return;
+      try {
+        if (Number.isFinite(audio.duration) && audio.duration > 0) {
+          audio.currentTime = Math.min(startAtSeconds, Math.max(0, audio.duration - 0.25));
+        }
+      } catch (e) {
+      }
+    };
+    const play = async () => {
+      try {
+        seekToStart();
+        await audio.play();
+        setFab(true);
+      } catch (e) {
+        setFab(false);
+      }
+    };
+    const pause = () => {
+      audio.pause();
+      setFab(false);
+    };
+    audio.addEventListener("loadedmetadata", seekToStart, { once: true });
+    gateBtn.addEventListener("click", async () => {
+      gate.hidden = true;
+      fab.hidden = false;
+      await play();
+    });
+    fab.addEventListener("click", async () => {
+      if (audio.paused) await play();
+      else pause();
+    });
+    audio.addEventListener("play", () => setFab(true));
+    audio.addEventListener("pause", () => setFab(false));
+  }
+  function preloadAssets(cfg) {
+    var _a, _b, _c, _d;
+    const isMobile = window.matchMedia("(max-width: 560px)").matches;
+    const bg = (_a = cfg == null ? void 0 : cfg.background) != null ? _a : {};
+    const sections = (_b = cfg == null ? void 0 : cfg.sections) != null ? _b : {};
+    const ev = (_c = cfg == null ? void 0 : cfg.event) != null ? _c : {};
+    const dedupe = (arr) => [...new Set(arr.filter(Boolean))];
+    const isVideo = (src) => /\.(mp4|webm|mov)$/i.test(src);
+    const isImage = (src) => /\.(png|jpe?g|webp|avif|gif)$/i.test(src);
+    const backgroundMedia = Array.isArray(bg == null ? void 0 : bg.media) ? bg.media : [];
+    const backgroundImages = Array.isArray(bg == null ? void 0 : bg.images) ? bg.images : [];
+    const galleryImages = Array.isArray((_d = sections == null ? void 0 : sections.gallery) == null ? void 0 : _d.images) ? sections.gallery.images : [];
+    const locationImages = Array.isArray(ev == null ? void 0 : ev.locationImages) ? ev.locationImages : [];
+    const all = dedupe([...backgroundMedia, ...backgroundImages, ...locationImages, ...galleryImages]);
+    const images = all.filter((s) => isImage(s));
+    const videos = all.filter((s) => isVideo(s));
+    for (const src of images) {
+      const img = new Image();
+      img.decoding = "async";
+      img.loading = "eager";
+      img.src = src;
+    }
+    for (const src of videos) {
+      const v = document.createElement("video");
+      v.preload = "metadata";
+      forceMutedInline(v);
+      v.src = src;
+      try {
+        v.load();
+      } catch (e) {
+      }
+    }
+  }
+  function showError(err) {
+    const box = qs("[data-error]");
+    if (!box) return;
+    box.hidden = false;
+    box.textContent = `Erro: ${err instanceof Error ? err.message : String(err)}`;
+  }
+  document.addEventListener("DOMContentLoaded", async () => {
+    var _a, _b;
+    try {
+      setVisualVhCssVar();
+      const onVhChange = () => setVisualVhCssVar();
+      window.addEventListener("resize", onVhChange, { passive: true });
+      (_a = window.visualViewport) == null ? void 0 : _a.addEventListener("resize", onVhChange, { passive: true });
+      const cfg = await loadConfig();
+      applyConfig(cfg);
+      setupMusic(cfg == null ? void 0 : cfg.music);
+      const start = () => preloadAssets(cfg);
+      if ("requestIdleCallback" in window) window.requestIdleCallback(start, { timeout: 1200 });
+      else globalThis.setTimeout(start, 250);
+      document.title = ((_b = cfg == null ? void 0 : cfg.event) == null ? void 0 : _b.title) ? `${cfg.event.title}` : "Convite";
+    } catch (e) {
+      console.error(e);
+      showError(e);
+    }
+  });
+})();
+//# sourceMappingURL=app.js.map

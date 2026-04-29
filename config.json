@@ -3,16 +3,16 @@
     "title": "Project SantX",
     "subtitle": "Isso mesmo que você está lendo, a festa do ano voltou!",
     "dateText": "Sábado, 05 de Dezembro de 2026",
-    "timeText": "A partir das 11:00h",
+    "timeText": "A partir das 13:00h",
     "locationName": "Casa de Praia em Itamaracá",
-    "locationAddress": "Em breve",
+    "locationAddress": "Mandarei no WhatsApp",
     "locationImages": [
       "assets/local/1.jpeg",
       "assets/local/2.jpeg",
       "assets/local/4.jpeg",
       "assets/local/5.jpeg"
     ],
-    "mapsUrl": "https://www.google.com/maps",
+    "mapsUrl": "https://maps.app.goo.gl/WYu3v2DMR6fhR41j8",
     "rsvp": {
       "enabled": true,
       "ctaText": "Confirmar presença",
@@ -26,37 +26,26 @@
       "title": "O Rolê",
       "text": "Dress code, energia e aviso: aqui é festa anual estilo Project X. Chega cedo, respeita o espaço e vem pra somar."
     },
-    "rules": {
+    "important": {
       "enabled": true,
-      "title": "Regras do Jogo",
+      "title": "Informações importantes",
       "bullets": [
-        "Sem treta. Se deu, tá fora.",
-        "Respeito total com a casa e com geral.",
-        "Não divulgue endereço em público — manda no privado.",
-        "Se beber, não dirija."
+        "OPEN BAR: teremos cerveja, cachaça, drinks, refrigerante e água. Fique a vontade para levar bebidas.",
+        "Chegue cedo: a festa começa 13:00h.",
+        "Camas: não vai ter cama pra todo mundo — são 17 camas + redes e sofás. Se quiser garantir, pode levar colchão/colchonete.",
+        "Confirme presença no WhatsApp pra eu organizar melhor."
       ]
     },
     "schedule": {
-      "enabled": true,
-      "title": "Line-up / Horários",
-      "items": [
-        {
-          "time": "22:00",
-          "label": "Abertura",
-          "detail": "Chegada e aquecimento"
-        },
-        { "time": "23:30", "label": "Pico", "detail": "Som no alto" },
-        { "time": "02:30", "label": "After", "detail": "Só quem é" }
-      ]
+      "enabled": false
     },
     "whatToBring": {
       "enabled": true,
-      "title": "O que levar",
+      "title": "O que eu sugiro levar(não é obrigatório)",
       "bullets": [
-        "Sua vibe",
-        "Bebida (se quiser)",
-        "Documento",
-        "Casaco (vai que)"
+        "Comidinhas",
+        "Bebidas de sua preferência",
+        "Colchão/colchonete"
       ]
     },
     "gallery": {
@@ -86,7 +75,7 @@
         },
         {
           "q": "O que posso levar?",
-          "a": "Bebidas, comida, etc. Tudo que você quiser."
+          "a": "Bebidas, comida, jogos... Tudo que você quiser."
         }
       ]
     }

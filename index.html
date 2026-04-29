@@ -2,7 +2,10 @@
 <html lang="pt-BR">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
     <meta name="color-scheme" content="dark" />
     <meta name="theme-color" content="#0B2E33" />
     <title>Convite</title>
@@ -58,8 +61,8 @@
         </div>
         <nav class="nav" aria-label="Seções">
           <a class="chip" href="#info">Info</a>
+          <a class="chip" data-nav="important" href="#important">Importante</a>
           <a class="chip" data-nav="about" href="#about">Rolê</a>
-          <a class="chip" data-nav="schedule" href="#schedule">Horários</a>
           <a class="chip" data-nav="whatToBring" href="#bring">Levar</a>
           <a class="chip" data-nav="rules" href="#rules">Regras</a>
           <a class="chip" data-nav="gallery" href="#gallery">Fotos</a>
@@ -84,14 +87,6 @@
             target="_blank"
             rel="noreferrer"
             >Confirmar presença</a
-          >
-          <a
-            class="btn"
-            data-href="event.mapsUrl"
-            href="#"
-            target="_blank"
-            rel="noreferrer"
-            >Ver no mapa</a
           >
           <a
             class="btn btn--app"
@@ -154,28 +149,26 @@
         </div>
       </section>
 
-      <section class="section" id="about" data-section="about">
+      <section class="section" id="important" data-section="important">
         <div class="section__hd">
-          <h2 class="section__title" data-bind="about.title">O Rolê</h2>
-          <p class="section__hint">Estilo Project X, mas com consciência.</p>
+          <h2 class="section__title" data-bind="important.title">
+            Informações importantes
+          </h2>
         </div>
         <div class="grid">
           <div class="panel">
-            <div data-bind="about.text">Texto do rolê.</div>
+            <ul class="list" data-important></ul>
           </div>
         </div>
       </section>
 
-      <section class="section" id="schedule" data-section="schedule">
+      <section class="section" id="about" data-section="about">
         <div class="section__hd">
-          <h2 class="section__title" data-bind="schedule.title">
-            Line-up / Horários
-          </h2>
-          <p class="section__hint">Chega no horário pra não perder o pico.</p>
+          <h2 class="section__title" data-bind="about.title">O Rolê</h2>
         </div>
         <div class="grid">
           <div class="panel">
-            <div class="timeline" data-schedule></div>
+            <div data-bind="about.text">Texto do rolê.</div>
           </div>
         </div>
       </section>
@@ -185,17 +178,10 @@
           <h2 class="section__title" data-bind="whatToBring.title">
             O que levar
           </h2>
-          <p class="section__hint">O básico pra todo mundo curtir.</p>
         </div>
         <div class="grid">
           <div class="panel panel--half">
             <ul class="list" data-whatToBring></ul>
-          </div>
-          <div class="panel panel--half">
-            <div style="color: rgba(var(--c-sand) / 0.76); line-height: 1.5">
-              Dica: se você quiser controlar o público, você pode mandar o link
-              só pra convidados e pedir confirmação no WhatsApp.
-            </div>
           </div>
         </div>
       </section>
@@ -203,7 +189,6 @@
       <section class="section" id="rules" data-section="rules">
         <div class="section__hd">
           <h2 class="section__title" data-bind="rules.title">Regras do Jogo</h2>
-          <p class="section__hint">Pra festa ser lendária, não caótica.</p>
         </div>
         <div class="grid">
           <div class="panel">
@@ -224,8 +209,7 @@
         </div>
       </section>
 
-      <footer class="footer">
-      </footer>
+      <footer class="footer"></footer>
     </main>
 
     <script src="./app.js?v=20260422-2"></script>
