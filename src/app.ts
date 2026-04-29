@@ -371,12 +371,20 @@ function renderMosaic(root: HTMLElement, media: string[], mosaicCfg: Nullable<Ba
   const isJpegOnly = (src: string) => /\.jpeg$/i.test(src);
 
   const vh = window.visualViewport?.height ?? window.innerHeight;
-  const area = Math.max(1, window.innerWidth * vh);
-  const tileArea = Math.max(1, ((tileMin + tileMax) / 2) ** 2);
-  const density = isMobile ? 0.52 : 1.35;
-  const minTiles = isMobile ? 8 : 18;
-  const maxTiles = isMobile ? 18 : 72;
-  const count = clampInt(Math.round((area / tileArea) * density), minTiles, maxTiles);
+  const vw = window.visualViewport?.width ?? window.innerWidth;
+
+  // Garante cobertura total da tela: calcula quantas tiles cabem (cols x rows)
+  // e gera uma folga para compensar tiles "tall" e gaps.
+  const tile = Math.max(16, Math.round(Number(root.style.getPropertyValue("--tile").replace("px", "")) || tileMin));
+  const step = Math.max(1, tile + gap);
+  const cols = Math.max(2, Math.floor((vw + gap) / step));
+  const rows = Math.max(2, Math.ceil((vh + gap) / step));
+  const base = cols * rows;
+
+  const slack = isMobile ? 1.55 : 1.8;
+  const minTiles = Math.max(base, isMobile ? 14 : 26);
+  const maxTiles = isMobile ? Math.max(40, base * 3) : Math.max(120, base * 4);
+  const count = clampInt(Math.round(base * slack), minTiles, maxTiles);
 
   const shuffle = (arr: string[]) => {
     for (let i = arr.length - 1; i > 0; i--) {
@@ -779,10 +787,20 @@ function showError(err: unknown) {
 
 document.addEventListener("DOMContentLoaded", async () => {
   try {
-    setVisualVhCssVar();
-    const onVhChange = () => setVisualVhCssVar();
-    window.addEventListener("resize", onVhChange, { passive: true });
-    window.visualViewport?.addEventListener("resize", onVhChange, { passive: true });
+    const syncViewportVars = () => setVisualVhCssVar();
+    const syncViewportVarsRaf = () => requestAnimationFrame(syncViewportVars);
+
+    // Primeiro paint + 1 tick depois (Safari às vezes ajusta viewport após layout)
+    syncViewportVars();
+    setTimeout(syncViewportVars, 60);
+
+    window.addEventListener("resize", syncViewportVarsRaf, { passive: true });
+    window.addEventListener("orientationchange", syncViewportVarsRaf, { passive: true });
+    window.addEventListener("scroll", syncViewportVarsRaf, { passive: true });
+
+    // iOS Safari: visualViewport muda com barra do navegador/zoom/scroll
+    window.visualViewport?.addEventListener("resize", syncViewportVarsRaf, { passive: true });
+    window.visualViewport?.addEventListener("scroll", syncViewportVarsRaf, { passive: true });
 
     setupActiveNav();
     (globalThis as any).__stickyCta = setupStickyCta();

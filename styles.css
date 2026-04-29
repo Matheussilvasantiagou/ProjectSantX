@@ -87,6 +87,16 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Conteúdo sempre acima do background */
+.topbar,
+.wrap,
+.stickycta,
+.musicfab,
+.gate{
+  position: relative;
+  z-index: 1;
+}
+
 a {
   color: inherit;
 }
@@ -219,7 +229,8 @@ a {
 .bg {
   position: fixed;
   inset: 0;
-  z-index: -3;
+  /* iOS/Safari pode "perder" layers com z-index negativo */
+  z-index: 0;
   overflow: hidden;
   background: rgb(var(--c-ink));
 }

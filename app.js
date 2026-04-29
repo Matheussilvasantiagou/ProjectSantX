@@ -223,7 +223,7 @@
     }, intervalMs);
   }
   function renderMosaic(root, media, mosaicCfg) {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _i;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k;
     const isMobile = window.matchMedia("(max-width: 560px)").matches;
     const tileMinRaw = isMobile ? Number((_b = (_a = mosaicCfg == null ? void 0 : mosaicCfg.tileMinMobile) != null ? _a : mosaicCfg == null ? void 0 : mosaicCfg.tileMin) != null ? _b : 50) : Number((_d = (_c = mosaicCfg == null ? void 0 : mosaicCfg.tileMinDesktop) != null ? _c : mosaicCfg == null ? void 0 : mosaicCfg.tileMin) != null ? _d : 120);
     const tileMin = Math.max(16, tileMinRaw);
@@ -240,12 +240,16 @@
     const isImage = (src) => /\.(png|jpe?g|webp|avif|gif)$/i.test(src);
     const isJpegOnly = (src) => /\.jpeg$/i.test(src);
     const vh = (_h = (_g = window.visualViewport) == null ? void 0 : _g.height) != null ? _h : window.innerHeight;
-    const area = Math.max(1, window.innerWidth * vh);
-    const tileArea = Math.max(1, ((tileMin + tileMax) / 2) ** 2);
-    const density = isMobile ? 0.52 : 1.35;
-    const minTiles = isMobile ? 8 : 18;
-    const maxTiles = isMobile ? 18 : 72;
-    const count = clampInt(Math.round(area / tileArea * density), minTiles, maxTiles);
+    const vw = (_j = (_i = window.visualViewport) == null ? void 0 : _i.width) != null ? _j : window.innerWidth;
+    const tile = Math.max(16, Math.round(Number(root.style.getPropertyValue("--tile").replace("px", "")) || tileMin));
+    const step = Math.max(1, tile + gap);
+    const cols = Math.max(2, Math.floor((vw + gap) / step));
+    const rows = Math.max(2, Math.ceil((vh + gap) / step));
+    const base = cols * rows;
+    const slack = isMobile ? 1.55 : 1.8;
+    const minTiles = Math.max(base, isMobile ? 14 : 26);
+    const maxTiles = isMobile ? Math.max(40, base * 3) : Math.max(120, base * 4);
+    const count = clampInt(Math.round(base * slack), minTiles, maxTiles);
     const shuffle = (arr) => {
       for (let i = arr.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -264,9 +268,9 @@
     }
     for (let i = 0; i < count; i++) {
       const src = chosen[i % chosen.length];
-      const tile = document.createElement("div");
-      tile.className = "bg__tile";
-      if (!isJpegOnly(src)) tile.classList.add("bg__tile--tall");
+      const tile2 = document.createElement("div");
+      tile2.className = "bg__tile";
+      if (!isJpegOnly(src)) tile2.classList.add("bg__tile--tall");
       if (isVideo(src)) {
         const v = document.createElement("video");
         v.src = src;
@@ -274,7 +278,7 @@
         v.loop = true;
         v.autoplay = true;
         v.preload = "metadata";
-        tile.appendChild(v);
+        tile2.appendChild(v);
         v.play().catch(() => {
         });
       } else if (isImage(src)) {
@@ -282,17 +286,17 @@
         img.src = src;
         img.alt = "";
         img.loading = "lazy";
-        tile.appendChild(img);
+        tile2.appendChild(img);
       } else {
         const img = document.createElement("img");
         img.src = src;
         img.alt = "";
         img.loading = "lazy";
-        tile.appendChild(img);
+        tile2.appendChild(img);
       }
-      root.appendChild(tile);
+      root.appendChild(tile2);
     }
-    (_i = mosaicResizeControllers.get(root)) == null ? void 0 : _i.abort();
+    (_k = mosaicResizeControllers.get(root)) == null ? void 0 : _k.abort();
     const controller = new AbortController();
     mosaicResizeControllers.set(root, controller);
     let t = 0;
@@ -576,12 +580,17 @@
     box.textContent = `Erro: ${err instanceof Error ? err.message : String(err)}`;
   }
   document.addEventListener("DOMContentLoaded", async () => {
-    var _a, _b;
+    var _a, _b, _c;
     try {
-      setVisualVhCssVar();
-      const onVhChange = () => setVisualVhCssVar();
-      window.addEventListener("resize", onVhChange, { passive: true });
-      (_a = window.visualViewport) == null ? void 0 : _a.addEventListener("resize", onVhChange, { passive: true });
+      const syncViewportVars = () => setVisualVhCssVar();
+      const syncViewportVarsRaf = () => requestAnimationFrame(syncViewportVars);
+      syncViewportVars();
+      setTimeout(syncViewportVars, 60);
+      window.addEventListener("resize", syncViewportVarsRaf, { passive: true });
+      window.addEventListener("orientationchange", syncViewportVarsRaf, { passive: true });
+      window.addEventListener("scroll", syncViewportVarsRaf, { passive: true });
+      (_a = window.visualViewport) == null ? void 0 : _a.addEventListener("resize", syncViewportVarsRaf, { passive: true });
+      (_b = window.visualViewport) == null ? void 0 : _b.addEventListener("scroll", syncViewportVarsRaf, { passive: true });
       setupActiveNav();
       globalThis.__stickyCta = setupStickyCta();
       const onVis = () => {
@@ -595,7 +604,7 @@
       const start = () => preloadAssets(cfg);
       if ("requestIdleCallback" in window) window.requestIdleCallback(start, { timeout: 1200 });
       else globalThis.setTimeout(start, 250);
-      document.title = ((_b = cfg == null ? void 0 : cfg.event) == null ? void 0 : _b.title) ? `${cfg.event.title}` : "Convite";
+      document.title = ((_c = cfg == null ? void 0 : cfg.event) == null ? void 0 : _c.title) ? `${cfg.event.title}` : "Convite";
     } catch (e) {
       console.error(e);
       showError(e);
