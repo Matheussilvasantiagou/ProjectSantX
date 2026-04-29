@@ -102,10 +102,13 @@
     return String(s).replace(/"/g, "&quot;");
   }
   function setVisualVhCssVar() {
-    var _a, _b;
+    var _a, _b, _c, _d;
     const vh = (_b = (_a = window.visualViewport) == null ? void 0 : _a.height) != null ? _b : window.innerHeight;
     const vvh = Math.max(1, vh) / 100;
     document.documentElement.style.setProperty("--vvh", `${vvh}px`);
+    const vw = (_d = (_c = window.visualViewport) == null ? void 0 : _c.width) != null ? _d : window.innerWidth;
+    const vvw = Math.max(1, vw) / 100;
+    document.documentElement.style.setProperty("--vvw", `${vvw}px`);
   }
   function setTheme(theme) {
     if (!theme) return;
@@ -335,8 +338,8 @@
     const rsvpEnabled = !!((_d = ev == null ? void 0 : ev.rsvp) == null ? void 0 : _d.enabled);
     const rsvpCta = (_f = (_e = ev == null ? void 0 : ev.rsvp) == null ? void 0 : _e.ctaText) != null ? _f : "Confirmar presen\xE7a";
     const rsvpLink = buildWhatsappLink((_g = ev == null ? void 0 : ev.rsvp) == null ? void 0 : _g.whatsappPhoneE164, (_h = ev == null ? void 0 : ev.rsvp) == null ? void 0 : _h.whatsappPrefill);
-    const rsvpBtn = qs("[data-rsvp-btn]");
-    if (rsvpBtn) {
+    const rsvpBtns = document.querySelectorAll("[data-rsvp-btn]");
+    for (const rsvpBtn of rsvpBtns) {
       rsvpBtn.textContent = rsvpCta;
       if (rsvpEnabled && rsvpLink) {
         rsvpBtn.href = rsvpLink;

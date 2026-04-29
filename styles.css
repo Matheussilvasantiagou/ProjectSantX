@@ -220,17 +220,17 @@ a {
   position: absolute;
   inset: -24px;
   display: flex;
-  flex-direction: column;
-  /* 2 mosaicos empilhados (cima + baixo), com bleed de 24px em ambos lados */
-  height: calc((var(--vvh, 1vh) * 200) + 96px);
+  flex-direction: row;
+  /* 2 mosaicos lado a lado, com bleed de 24px em ambos lados */
+  width: calc((var(--vvw, 1vw) * 200) + 96px);
   will-change: transform;
-  animation: mosaic-track-y 90s linear infinite;
+  animation: mosaic-track-x 90s linear infinite;
 }
 .bg__mosaic{
   position: relative;
   inset: auto;
-  /* usa vvh (visual viewport) pra não oscilar com barra do navegador no mobile */
-  flex: 0 0 calc((var(--vvh, 1vh) * 100) + 48px);
+  /* usa vvw (visual viewport) pra não oscilar com barra do navegador no mobile */
+  flex: 0 0 calc((var(--vvw, 1vw) * 100) + 48px);
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(var(--tile, 160px), 1fr));
   grid-auto-rows: var(--tile, 160px);
@@ -355,13 +355,13 @@ a {
   }
 }
 
-@keyframes mosaic-track-y {
+@keyframes mosaic-track-x {
   from {
     transform: translate3d(0, 0, 0);
   }
   to {
-    /* Move exatamente 1 mosaico (vvh*100 + 48px) para cima */
-    transform: translate3d(0, calc(-1 * ((var(--vvh, 1vh) * 100) + 48px)), 0);
+    /* Move exatamente 1 mosaico (vvw*100 + 48px) para a esquerda */
+    transform: translate3d(calc(-1 * ((var(--vvw, 1vw) * 100) + 48px)), 0, 0);
   }
 }
 
@@ -469,6 +469,7 @@ a {
   padding: 42px 0 18px;
   display: grid;
   gap: 18px;
+  margin-bottom: 200px;
 }
 .hero__title {
   font-size: clamp(34px, 6vw, 62px);
@@ -764,10 +765,35 @@ a {
 
 .footer {
   margin-top: 26px;
-  padding: 18px;
+  padding: 18px 0;
   border-top: 1px solid rgba(var(--c-sand) / 0.1);
   color: rgba(var(--c-sand) / 0.64);
   font-size: 12px;
+}
+.footer__cta {
+  display: flex;
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 calc(18px + var(--safe-r)) 0 calc(18px + var(--safe-l));
+  justify-content: flex-start;
+  align-items: stretch;
+  flex-direction: row;
+  gap: 12px;
+}
+.footer__cta .btn {
+  width: auto;
+  flex: 1 1 0;
+}
+
+@media (max-width: 560px) {
+  .footer__cta {
+    padding: 0 calc(14px + var(--safe-r)) 0 calc(14px + var(--safe-l));
+    flex-direction: column;
+    gap: 10px;
+  }
+  .footer__cta .btn {
+    width: 100%;
+  }
 }
 
 @media (max-width: 900px) {

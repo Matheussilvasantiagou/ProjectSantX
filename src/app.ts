@@ -213,6 +213,10 @@ function setVisualVhCssVar() {
   const vh = window.visualViewport?.height ?? window.innerHeight;
   const vvh = Math.max(1, vh) / 100;
   document.documentElement.style.setProperty("--vvh", `${vvh}px`);
+
+  const vw = window.visualViewport?.width ?? window.innerWidth;
+  const vvw = Math.max(1, vw) / 100;
+  document.documentElement.style.setProperty("--vvw", `${vvw}px`);
 }
 
 function setTheme(theme: Nullable<ThemeConfig>) {
@@ -487,8 +491,8 @@ function applyConfig(cfg: AppConfig) {
   const rsvpEnabled = !!ev?.rsvp?.enabled;
   const rsvpCta = ev?.rsvp?.ctaText ?? "Confirmar presença";
   const rsvpLink = buildWhatsappLink(ev?.rsvp?.whatsappPhoneE164, ev?.rsvp?.whatsappPrefill);
-  const rsvpBtn = qs<HTMLAnchorElement>("[data-rsvp-btn]");
-  if (rsvpBtn) {
+  const rsvpBtns = document.querySelectorAll<HTMLAnchorElement>("[data-rsvp-btn]");
+  for (const rsvpBtn of rsvpBtns) {
     rsvpBtn.textContent = rsvpCta;
     if (rsvpEnabled && rsvpLink) {
       rsvpBtn.href = rsvpLink;
