@@ -19,7 +19,7 @@ const SECTION_ICONS: Record<string, string> = {
   important: "🍹",
   about: "🎭",
   whatToBring: "🎒",
-  rules: "📋",
+  rules: "👗",
   gallery: "📸",
   faq: "❓",
 };

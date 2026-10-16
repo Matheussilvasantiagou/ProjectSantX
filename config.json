@@ -3,7 +3,7 @@
     "title": "Project SantX",
     "subtitle": "Isso mesmo que você está lendo, a festa do ano voltou! Tema: Carnaval 🎭",
     "dateText": "Sábado, 23 de Janeiro de 2027",
-    "timeText": "A partir das 13:00h",
+    "timeText": "Pool Party às 12h · Night Party às 19h",
     "locationName": "Casa Suíça Janga",
     "locationAddress": "Mandarei no WhatsApp",
     "locationImages": [
@@ -26,21 +26,34 @@
     "about": {
       "enabled": true,
       "title": "O Rolê",
-      "text": "Tema: Carnaval 🎭 — capricha na fantasia! Energia, cor e aviso: aqui é festa anual estilo Project X. Chega cedo, respeita o espaço e vem pra somar."
+      "text": "A festa do ano está de volta — e esse ano vem ainda maior e mais incrível que as edições anteriores. 2 dias de festa com open bar, open food, barman e karaokê. Tema: Carnaval 🎭 — capricha na fantasia! Energia, cor e aviso: chega cedo, respeita o espaço e vem pra somar. #SantiagosBdayParty"
     },
     "important": {
       "enabled": true,
       "title": "Informações importantes",
       "bullets": [
         "TEMA: CARNAVAL — vem fantasiado(a), capricha na criatividade!",
-        "OPEN BAR: teremos cerveja, cachaça, drinks, refrigerante e água. Fique a vontade para levar bebidas.",
-        "Chegue cedo: a festa começa 13:00h.",
-        "Camas: não vai ter cama pra todo mundo — são 44 camas + redes e sofás. Se quiser garantir, pode levar colchão/colchonete.",
+        "2 DIAS DE FESTA: estadia completa inclusa, com direito a caminha pra dormir.",
+        "OPEN BAR e OPEN FOOD: teremos cerveja, cachaça, drinks, refrigerante, água e comida à vontade.",
+        "BARMAN e KARAOKÊ garantidos, além de mais umas surpresinhas e brindes que podem vir.",
+        "INGRESSO: R$130,00 com tudo isso incluso.",
+        "CAMAS: são 40 camas (18 com ar condicionado + 22 no segundo andar com ventilador), 80 lugares e muitos sofás — disponibilizadas para os primeiros pagantes, até esgotar.",
+        "Cada quarto terá uma cor de pulseira — só entra no quarto quem tem a pulseira certa.",
+        "Chegue cedo: a Pool Party começa às 12h.",
         "Confirme presença no WhatsApp pra eu organizar melhor."
       ]
     },
     "schedule": {
       "enabled": false
+    },
+    "rules": {
+      "enabled": true,
+      "title": "Trajes",
+      "bullets": [
+        "Pool Party (12h): roupa de banho.",
+        "Night Party (19h): roupa vermelha e/ou branca — capricha no glitter, imagine como se você estivesse no Carnaval de Olinda.",
+        "Por gentileza, seguir as instruções! 🙏"
+      ]
     },
     "whatToBring": {
       "enabled": true,
@@ -70,8 +83,16 @@
           "a": "O tema é Carnaval, então sim! Capricha na fantasia — quem vier mais criativo ganha os aplausos da festa."
         },
         {
-          "q": "Como funciona o OPEN BAR?",
-          "a": "Termos cerveja, cachaça, drinks, refrigerante e água."
+          "q": "Quanto custa o ingresso?",
+          "a": "R$130,00, com open bar, open food, barman, karaokê e estadia completa (2 dias de festa) incluídos."
+        },
+        {
+          "q": "Como funciona o OPEN BAR e o OPEN FOOD?",
+          "a": "Teremos cerveja, cachaça, drinks, refrigerante, água e comida à vontade."
+        },
+        {
+          "q": "Vou ter cama garantida?",
+          "a": "São 40 camas (18 com ar + 22 com ventilador), liberadas para os primeiros pagantes até esgotar. Depois disso, sofás e redes também rolam — se quiser garantir mesmo, pode levar colchão/colchonete."
         },
         {
           "q": "Pode levar mais alguém?",

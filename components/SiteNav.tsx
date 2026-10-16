@@ -7,7 +7,7 @@ const NAV_ITEMS: { id: string; label: string }[] = [
   { id: "important", label: "Importante" },
   { id: "about", label: "Rolê" },
   { id: "whatToBring", label: "Levar" },
-  { id: "rules", label: "Regras" },
+  { id: "rules", label: "Trajes" },
   { id: "gallery", label: "Fotos" },
   { id: "faq", label: "FAQ" },
 ];
