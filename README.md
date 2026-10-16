@@ -1,52 +1,46 @@
 # Convite Project X (site)
 
+Site em [Next.js](https://nextjs.org) (App Router). As fotos são servidas com otimização automática (`next/image`: WebP/AVIF, tamanhos responsivos, lazy loading).
+
 ## Como colocar suas fotos
 
-- Crie a pasta `assets/` (se ainda não existir)
-- Coloque suas imagens lá dentro (ex.: `bg-1.jpg`, `bg-2.jpg`, `gallery-1.jpg`, etc.)
-- Edite o `config.json` e ajuste:
-  - `background.images`: fotos do fundo
+- Coloque suas imagens em `public/assets/` (ex.: `public/assets/partyImages/1.jpeg`)
+- Edite o `config.json` e ajuste os caminhos (sempre começando com `/`, ex.: `/assets/partyImages/1.jpeg`):
+  - `background.media`: fotos/vídeos do mosaico de fundo
   - `sections.gallery.images`: fotos da galeria
+  - `event.locationImages`: fotos do local
 
 ## Como editar as informações
 
-Tudo fica no `config.json`:
-
-- Título, data, horário, endereço, mapa
-- Textos e itens das seções
-- Botão de RSVP (WhatsApp)
+Tudo fica no `config.json`: título, data, horário, endereço, textos das seções, botão de RSVP (WhatsApp), música de fundo etc.
 
 ## Como rodar local
 
-Você pode abrir o `index.html` direto no navegador, mas para o `fetch("./config.json")` funcionar sem bloqueio é melhor usar um servidor local.
-
-Se você tiver Node:
-
 ```bash
-npx serve .
+yarn dev
 ```
 
-Ou Python 3:
+Acesse `http://localhost:3000`.
+
+## Build de produção
 
 ```bash
-python3 -m http.server 5173
+yarn build
+yarn start
 ```
 
-Depois acesse a URL que o comando mostrar.
+## Publicar no Vercel
 
-## Publicar no GitHub Pages
+1. Suba o repositório no GitHub (se ainda não estiver).
+2. Crie uma conta gratuita em [vercel.com](https://vercel.com) e importe o repositório.
+3. O Vercel detecta o Next.js automaticamente e faz o deploy — sem custo, sem precisar de domínio próprio (você recebe uma URL `seu-projeto.vercel.app`).
+4. A cada `git push`, o Vercel gera um novo deploy sozinho.
 
-- **Opção A (recomendado)**: Settings → Pages → **Deploy from a branch**
-  - Branch: `main`
-  - Folder: `/ (root)`
-- **Opção B**: usar `/docs` (se você preferir). Aí teria que mover os arquivos para `docs/`.
+## Estrutura
 
-Depois de publicar, seu site vai ficar em:
-
-- `https://<seu-usuario>.github.io/<nome-do-repo>/`
-
-Dicas:
-
-- Deixe o `index.html` na raiz (já está) — é o arquivo que o Pages procura.
-- O arquivo `.nojekyll` já foi adicionado (evita o Jekyll interferir em pastas/arquivos).
-
+- `app/page.tsx` — página de entrada (`/`)
+- `app/invite/page.tsx` — página do convite (`/invite`)
+- `components/` — background/mosaico, galeria, player de música, nav, sticky CTA
+- `lib/config.ts` — tipos e leitura do `config.json`
+- `config.json` — todo o conteúdo editável do site
+- `public/assets/` — fotos, vídeos e música

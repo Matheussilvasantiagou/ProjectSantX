@@ -2,22 +2,22 @@
   "event": {
     "title": "Project SantX",
     "subtitle": "Isso mesmo que você está lendo, a festa do ano voltou!",
-    "dateText": "Sábado, 05 de Dezembro de 2026",
+    "dateText": "Sábado, 23 de Janeiro de 2027",
     "timeText": "A partir das 13:00h",
     "locationName": "Casa de Praia em Itamaracá",
     "locationAddress": "Mandarei no WhatsApp",
     "locationImages": [
-      "assets/local/1.jpeg",
-      "assets/local/2.jpeg",
-      "assets/local/4.jpeg",
-      "assets/local/5.jpeg"
+      "/assets/local/1.jpeg",
+      "/assets/local/2.jpeg",
+      "/assets/local/4.jpeg",
+      "/assets/local/5.jpeg"
     ],
     "mapsUrl": "https://maps.app.goo.gl/WYu3v2DMR6fhR41j8",
     "rsvp": {
       "enabled": true,
       "ctaText": "Confirmar presença",
-      "whatsappPhoneE164": "+55XXXXXXXXXXX",
-      "whatsappPrefill": "Tô dentro! Confirmando presença no Project X 🎉%0ANome:%20%0AQuantas%20pessoas:%20"
+      "whatsappPhoneE164": "+5581988952629",
+      "whatsappPrefill": "Tô dentro! Confirmando presença no Project X 🎉\nNome: \nQuantas pessoas: "
     }
   },
   "sections": {
@@ -52,9 +52,9 @@
       "enabled": true,
       "title": "Memórias",
       "images": [
-        "assets/partyImages/14.jpeg",
-        "assets/partyImages/21.jpeg",
-        "assets/partyImages/6.jpeg"
+        "/assets/partyImages/14.jpeg",
+        "/assets/partyImages/21.jpeg",
+        "/assets/partyImages/6.jpeg"
       ]
     },
     "faq": {
@@ -83,29 +83,29 @@
   "background": {
     "mode": "mosaic",
     "media": [
-      "assets/partyImages/1.jpeg",
-      "assets/partyImages/2.jpeg",
-      "assets/partyImages/3.jpeg",
-      "assets/partyImages/4.jpeg",
-      "assets/partyImages/5.jpeg",
-      "assets/partyImages/6.jpeg",
-      "assets/partyImages/7.jpeg",
-      "assets/partyImages/8.jpeg",
-      "assets/partyImages/9.jpeg",
-      "assets/partyImages/10.jpeg",
-      "assets/partyImages/11.jpeg",
-      "assets/partyImages/12.jpeg",
-      "assets/partyImages/13.jpeg",
-      "assets/partyImages/14.jpeg",
-      "assets/partyImages/15.jpeg",
-      "assets/partyImages/16.jpeg",
-      "assets/partyImages/17.jpeg",
-      "assets/partyImages/18.jpeg",
-      "assets/partyImages/20.jpeg",
-      "assets/partyImages/21.jpeg",
-      "assets/partyImages/22.jpeg",
-      "assets/partyImages/35.mp4",
-      "assets/partyImages/25.mp4"
+      "/assets/partyImages/1.jpeg",
+      "/assets/partyImages/2.jpeg",
+      "/assets/partyImages/3.jpeg",
+      "/assets/partyImages/4.jpeg",
+      "/assets/partyImages/5.jpeg",
+      "/assets/partyImages/6.jpeg",
+      "/assets/partyImages/7.jpeg",
+      "/assets/partyImages/8.jpeg",
+      "/assets/partyImages/9.jpeg",
+      "/assets/partyImages/10.jpeg",
+      "/assets/partyImages/11.jpeg",
+      "/assets/partyImages/12.jpeg",
+      "/assets/partyImages/13.jpeg",
+      "/assets/partyImages/14.jpeg",
+      "/assets/partyImages/15.jpeg",
+      "/assets/partyImages/16.jpeg",
+      "/assets/partyImages/17.jpeg",
+      "/assets/partyImages/18.jpeg",
+      "/assets/partyImages/20.jpeg",
+      "/assets/partyImages/21.jpeg",
+      "/assets/partyImages/22.jpeg",
+      "/assets/partyImages/35.mp4",
+      "/assets/partyImages/25.mp4"
     ],
     "intervalMs": 6500,
     "overlayStrength": 0.8,
@@ -126,7 +126,7 @@
   },
   "music": {
     "enabled": true,
-    "src": "assets/songs/Project X - Pursuit of Happiness「Music Video」 - Amanda Florie (youtube).mp3",
+    "src": "/assets/songs/Project X - Pursuit of Happiness「Music Video」 - Amanda Florie (youtube).mp3",
     "startAtSeconds": 45.5,
     "volume": 0.85,
     "loop": true,

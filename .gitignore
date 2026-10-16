@@ -1,5 +1,5 @@
 /node_modules
 /.yarn/cache
-/.yarn/cache
 /.yarn
-/.yarn
+/.next
+/next-env.d.ts
