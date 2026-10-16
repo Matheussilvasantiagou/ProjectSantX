@@ -1,6 +1,14 @@
 import type { Metadata, Viewport } from "next";
+import { Fredoka } from "next/font/google";
 import "./globals.css";
 import { config } from "../lib/config";
+
+const fredoka = Fredoka({
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  variable: "--font-display",
+  display: "swap",
+});
 
 const siteUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -43,7 +51,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR" data-scroll-behavior="smooth">
+    <html lang="pt-BR" data-scroll-behavior="smooth" className={fredoka.variable}>
       <body>{children}</body>
     </html>
   );

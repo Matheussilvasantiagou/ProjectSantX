@@ -14,6 +14,27 @@ export const metadata: Metadata = {
   title: config.event?.title ?? "Convite",
 };
 
+const SECTION_ICONS: Record<string, string> = {
+  info: "🎉",
+  important: "🍹",
+  about: "🎭",
+  whatToBring: "🎒",
+  rules: "📋",
+  gallery: "📸",
+  faq: "❓",
+};
+
+function SectionTitle({ id, children }: { id: string; children: React.ReactNode }) {
+  return (
+    <h2 className="section__title">
+      <span className="section__icon" aria-hidden="true">
+        {SECTION_ICONS[id] ?? "✨"}
+      </span>
+      {children}
+    </h2>
+  );
+}
+
 export default function InvitePage() {
   const ev = config.event ?? {};
   const sections = config.sections ?? {};
@@ -59,7 +80,7 @@ export default function InvitePage() {
 
         <section className="section" id="info">
           <div className="section__hd">
-            <h2 className="section__title">Informações</h2>
+            <SectionTitle id="info">Informações</SectionTitle>
           </div>
           <div className="cards">
             <div className="card card--half">
@@ -93,7 +114,7 @@ export default function InvitePage() {
         {sections.important?.enabled && (
           <section className="section" id="important">
             <div className="section__hd">
-              <h2 className="section__title">{sections.important.title}</h2>
+              <SectionTitle id="important">{sections.important.title}</SectionTitle>
             </div>
             <div className="grid">
               <div className="panel">
@@ -110,7 +131,7 @@ export default function InvitePage() {
         {sections.about?.enabled && (
           <section className="section" id="about">
             <div className="section__hd">
-              <h2 className="section__title">{sections.about.title}</h2>
+              <SectionTitle id="about">{sections.about.title}</SectionTitle>
             </div>
             <div className="grid">
               <div className="panel">
@@ -123,7 +144,7 @@ export default function InvitePage() {
         {sections.whatToBring?.enabled && (
           <section className="section" id="whatToBring">
             <div className="section__hd">
-              <h2 className="section__title">{sections.whatToBring.title}</h2>
+              <SectionTitle id="whatToBring">{sections.whatToBring.title}</SectionTitle>
             </div>
             <div className="grid">
               <div className="panel panel--half">
@@ -140,7 +161,7 @@ export default function InvitePage() {
         {sections.rules?.enabled && (
           <section className="section" id="rules">
             <div className="section__hd">
-              <h2 className="section__title">{sections.rules.title}</h2>
+              <SectionTitle id="rules">{sections.rules.title}</SectionTitle>
             </div>
             <div className="grid">
               <div className="panel">
@@ -157,7 +178,7 @@ export default function InvitePage() {
         {sections.gallery?.enabled && (
           <section className="section" id="gallery">
             <div className="section__hd">
-              <h2 className="section__title">{sections.gallery.title}</h2>
+              <SectionTitle id="gallery">{sections.gallery.title}</SectionTitle>
             </div>
             <Gallery images={sections.gallery.images ?? []} />
           </section>
@@ -166,7 +187,7 @@ export default function InvitePage() {
         {sections.faq?.enabled && (
           <section className="section" id="faq">
             <div className="section__hd">
-              <h2 className="section__title">{sections.faq.title}</h2>
+              <SectionTitle id="faq">{sections.faq.title}</SectionTitle>
               <p className="section__hint">Perguntas rápidas, respostas diretas.</p>
             </div>
             <div className="grid">

@@ -10,7 +10,7 @@ export default function LocationGallery({ images }: { images: string[] }) {
         <h3 className="section__title" style={{ fontSize: 14 }}>
           Local
         </h3>
-        <p className="section__hint">Praia de Itamaracá</p>
+        <p className="section__hint">Janga, Paulista/PE</p>
       </div>
       <div className="locallery">
         {list.map((src) => (

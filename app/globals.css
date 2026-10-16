@@ -151,7 +151,8 @@ a {
   border: 1px solid rgba(var(--c-sand) / 0.2);
 }
 .gate__title {
-  font-weight: 950;
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 700;
   letter-spacing: 0.02em;
   text-transform: uppercase;
   line-height: 1.05;
@@ -440,7 +441,8 @@ a {
   min-width: 0;
 }
 .brand__title {
-  font-weight: 820;
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 600;
   letter-spacing: 0.02em;
   font-size: 13px;
   white-space: nowrap;
@@ -513,11 +515,33 @@ a {
 }
 
 .hero {
+  position: relative;
   padding: 22px 0 10px;
   display: grid;
   gap: 12px;
   margin-bottom: 42px;
   text-align: center;
+}
+.hero::before {
+  content: "";
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  width: min(480px, 92vw);
+  height: 96px;
+  transform: translateX(-50%);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 160'%3E%3Crect x='20' y='18' width='10' height='4' rx='1' fill='%234ED6D3' transform='rotate(20 25 20)'/%3E%3Ccircle cx='70' cy='40' r='4' fill='%23C9A24D'/%3E%3Crect x='110' y='10' width='8' height='8' rx='2' fill='%23423A90' transform='rotate(45 114 14)'/%3E%3Ccircle cx='160' cy='30' r='3' fill='%234ED6D3'/%3E%3Crect x='200' y='50' width='10' height='4' rx='1' fill='%23C9A24D' transform='rotate(-15 205 52)'/%3E%3Cpolygon points='250,20 258,34 242,34' fill='%23E85D9E'/%3E%3Ccircle cx='300' cy='15' r='4' fill='%23423A90'/%3E%3Crect x='330' y='40' width='8' height='8' rx='2' fill='%234ED6D3' transform='rotate(30 334 44)'/%3E%3Ccircle cx='370' cy='25' r='3' fill='%23C9A24D'/%3E%3Crect x='40' y='70' width='8' height='8' rx='2' fill='%23E85D9E' transform='rotate(60 44 74)'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: contain;
+  opacity: 0.6;
+  pointer-events: none;
+}
+@media (min-width: 561px) {
+  .hero::before {
+    left: 0;
+    transform: none;
+  }
 }
 @media (min-width: 561px) {
   .hero {
@@ -528,11 +552,12 @@ a {
   }
 }
 .hero__title {
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
   font-size: clamp(34px, 6vw, 62px);
   line-height: 1.02;
   letter-spacing: -0.015em;
   margin: 0;
-  font-weight: 900;
+  font-weight: 700;
   text-transform: uppercase;
   text-shadow: 0 18px 70px rgba(var(--c-ink) / 0.65);
 }
@@ -542,11 +567,32 @@ a {
   }
 }
 .hero__title .grad {
-  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  background: linear-gradient(
+    90deg,
+    var(--accent),
+    rgb(var(--c-gold)),
+    var(--accent2)
+  );
+  background-size: 200% auto;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   -webkit-text-fill-color: transparent;
+  animation: grad-shift 6s ease-in-out infinite;
+}
+@keyframes grad-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero__title .grad {
+    animation: none;
+  }
 }
 .hero__subtitle {
   margin: 0;
@@ -621,12 +667,18 @@ a {
   box-shadow: 0 8px 22px rgba(var(--c-ink) / 0.22);
 }
 .btn--primary {
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  background: linear-gradient(
+    135deg,
+    var(--accent),
+    rgb(var(--c-gold)) 55%,
+    var(--accent2)
+  );
   color: var(--on-accent);
   border: 0;
   box-shadow:
     0 18px 60px rgba(var(--c-accent) / 0.14),
-    0 18px 60px rgba(var(--c-contrast) / 0.16);
+    0 18px 60px rgba(var(--c-contrast) / 0.16),
+    0 10px 30px rgba(var(--c-gold) / 0.18);
 }
 
 @media (hover: hover) {
@@ -749,11 +801,20 @@ a {
   }
 }
 .section__title {
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
   margin: 0;
-  font-size: 16px;
+  font-size: 17px;
+  font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: rgba(var(--c-sand) / 0.9);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section__icon {
+  font-size: 18px;
+  line-height: 1;
 }
 .section__hint {
   margin: 0;
