@@ -4,6 +4,7 @@ import Background from "../../components/Background";
 import Gallery from "../../components/Gallery";
 import LocationGallery from "../../components/LocationGallery";
 import MusicPlayer from "../../components/MusicPlayer";
+import ScrollAnimations from "../../components/ScrollAnimations";
 import SiteNav from "../../components/SiteNav";
 import StickyCta from "../../components/StickyCta";
 import ViewportVars from "../../components/ViewportVars";
@@ -33,6 +34,7 @@ export default function InvitePage() {
       <ViewportVars />
       <Background bg={config.background} />
       <MusicPlayer music={config.music} />
+      <ScrollAnimations />
 
       <header className="topbar">
         <div className="topbar__in">

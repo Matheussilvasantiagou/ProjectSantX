@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Background from "../components/Background";
+import GateAnimation from "../components/GateAnimation";
 import ViewportVars from "../components/ViewportVars";
 import { config } from "../lib/config";
 
@@ -10,6 +11,7 @@ export default function LandingPage() {
     <div className="landing">
       <ViewportVars />
       <Background bg={config.background} />
+      <GateAnimation />
 
       <div className="gate gate--landing">
         <div className="gate__card">

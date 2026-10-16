@@ -1,7 +1,7 @@
 {
   "event": {
     "title": "Project SantX",
-    "subtitle": "Isso mesmo que você está lendo, a festa do ano voltou!",
+    "subtitle": "Isso mesmo que você está lendo, a festa do ano voltou! Tema: Carnaval 🎭",
     "dateText": "Sábado, 23 de Janeiro de 2027",
     "timeText": "A partir das 13:00h",
     "locationName": "Casa de Praia em Itamaracá",
@@ -24,12 +24,13 @@
     "about": {
       "enabled": true,
       "title": "O Rolê",
-      "text": "Dress code, energia e aviso: aqui é festa anual estilo Project X. Chega cedo, respeita o espaço e vem pra somar."
+      "text": "Tema: Carnaval 🎭 — capricha na fantasia! Energia, cor e aviso: aqui é festa anual estilo Project X. Chega cedo, respeita o espaço e vem pra somar."
     },
     "important": {
       "enabled": true,
       "title": "Informações importantes",
       "bullets": [
+        "TEMA: CARNAVAL — vem fantasiado(a), capricha na criatividade!",
         "OPEN BAR: teremos cerveja, cachaça, drinks, refrigerante e água. Fique a vontade para levar bebidas.",
         "Chegue cedo: a festa começa 13:00h.",
         "Camas: não vai ter cama pra todo mundo — são 17 camas + redes e sofás. Se quiser garantir, pode levar colchão/colchonete.",
@@ -43,6 +44,7 @@
       "enabled": true,
       "title": "O que eu sugiro levar(não é obrigatório)",
       "bullets": [
+        "Fantasia de Carnaval",
         "Comidinhas",
         "Bebidas de sua preferência",
         "Colchão/colchonete"
@@ -61,6 +63,10 @@
       "enabled": true,
       "title": "FAQ",
       "items": [
+        {
+          "q": "Preciso ir fantasiado?",
+          "a": "O tema é Carnaval, então sim! Capricha na fantasia — quem vier mais criativo ganha os aplausos da festa."
+        },
         {
           "q": "Como funciona o OPEN BAR?",
           "a": "Termos cerveja, cachaça, drinks, refrigerante e água."
