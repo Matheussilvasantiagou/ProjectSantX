@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Fredoka } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 import { config } from "../lib/config";
 
@@ -25,6 +27,10 @@ export const metadata: Metadata = {
   icons: {
     icon: "/assets/logosbpng.png",
     apple: "/assets/logosbpng.png",
+  },
+  robots: {
+    index: false,
+    follow: false,
   },
   openGraph: {
     title,
@@ -52,7 +58,11 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR" data-scroll-behavior="smooth" className={fredoka.variable}>
-      <body>{children}</body>
+      <body>
+        {children}
+        <Analytics />
+        <SpeedInsights />
+      </body>
     </html>
   );
 }

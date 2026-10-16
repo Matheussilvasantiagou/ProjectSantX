@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Background from "../../components/Background";
 import Gallery from "../../components/Gallery";
 import LocationGallery from "../../components/LocationGallery";
+import MosaicShowcase from "../../components/MosaicShowcase";
 import MusicPlayer from "../../components/MusicPlayer";
 import ScrollAnimations from "../../components/ScrollAnimations";
 import SiteNav from "../../components/SiteNav";
@@ -225,6 +226,9 @@ export default function InvitePage() {
               <Image className="btn__icon" src="/assets/logosbpng.png" alt="" width={22} height={22} aria-hidden="true" />
               Santa Balbúrdia: Party Games
             </a>
+          </div>
+          <div style={{ textAlign: "center" }}>
+            <MosaicShowcase />
           </div>
         </footer>
       </main>

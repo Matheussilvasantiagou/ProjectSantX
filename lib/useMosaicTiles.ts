@@ -39,9 +39,7 @@ function computeLayout(media: string[], mosaicCfg: BackgroundMosaicConfig | unde
     return out;
   };
 
-  // No mobile, continua removendo vídeos por padrão (só fotos).
-  const baseMedia = isMobile ? media.filter((s) => !isVideo(s)) : media;
-  const chosen = shuffle(baseMedia);
+  const chosen = shuffle(media);
   // Mostra todas pelo menos 1x e completa a grade repetindo se precisar.
   const count = Math.max(chosen.length, minTiles);
 

@@ -1,7 +1,12 @@
+"use client";
+
 import Image from "next/image";
+import { useState } from "react";
+import Lightbox from "./Lightbox";
 
 export default function LocationGallery({ images }: { images: string[] }) {
   const list = images.filter(Boolean);
+  const [index, setIndex] = useState<number | null>(null);
   if (!list.length) return null;
 
   return (
@@ -13,8 +18,14 @@ export default function LocationGallery({ images }: { images: string[] }) {
         <p className="section__hint">Janga, Paulista/PE</p>
       </div>
       <div className="locallery">
-        {list.map((src) => (
-          <a key={src} className="locallery__img" href={src} target="_blank" rel="noreferrer">
+        {list.map((src, i) => (
+          <button
+            key={src}
+            type="button"
+            className="locallery__img"
+            onClick={() => setIndex(i)}
+            aria-label="Ver foto do local"
+          >
             <Image
               src={src}
               alt="Foto do local"
@@ -22,9 +33,10 @@ export default function LocationGallery({ images }: { images: string[] }) {
               loading="lazy"
               sizes="(max-width: 560px) 50vw, 33vw"
             />
-          </a>
+          </button>
         ))}
       </div>
+      <Lightbox images={list} index={index} onClose={() => setIndex(null)} onNavigate={setIndex} />
     </div>
   );
 }
