@@ -143,8 +143,8 @@
       "/assets/partyImages/25.mp4"
     ],
     "intervalMs": 6500,
-    "overlayStrength": 0.8,
-    "vignetteStrength": 0.5,
+    "overlayStrength": 0.35,
+    "vignetteStrength": 0.3,
     "filmGrain": true,
     "mosaic": {
       "tileMinMobile": 110,
